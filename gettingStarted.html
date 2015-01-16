@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+  <meta name="viewport" content="width=device-width">
+
+  <title>WeIO Documentation</title>
+
+  <!-- Flatdoc -->
+  <script src='support/vendor/jquery.js'></script>
+  <script src='legacy.js'></script>
+  <script src='flatdoc.js'></script>
+
+  <!-- Flatdoc theme -->
+  <link  href='theme-white/style.css' rel='stylesheet'>
+  <link  href='style.css' rel='stylesheet'>
+  <script src='theme-white/script.js'></script>
+
+  <!-- Initializer -->
+  <script>
+    Flatdoc.run({
+      fetcher: Flatdoc.file('gettingStarted.md')
+    });
+  </script>
+  <style>
+  </style>
+</head>
+<body role='flatdoc'>
+
+  <div class='header'>
+    <div class='left'>
+      <h1>
+          <a href="../index.html">WeIO</a>
+      </h1>
+
+      <ul>
+            <li><a href="gettingStarted.html">Getting started</a></li>
+            <li><a href="tutorial.html">Tutorial</a></li>
+            <li><a href="examples.html">Examples</a></li>
+            <li><a href="boardHW.html">Board and HW</a></li>
+            <li><a href="ide.html">IDE</a></li>
+            <li><a href="jsAPI.html">Javascript API</a></li>
+            <li><a href="pyAPI.html">Python API</a></li>
+            <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div role='flatdoc' class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
+
+</body>
+</html>
