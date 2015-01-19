@@ -135,3 +135,49 @@ function HSVtoRGB(h, s, v) {
 ```
 ### Download source code of the project
 Follow this link to download WeIO archive that you can directly test on your board
+
+# Examples
+
+## Analog
+
+### analogRead_PY
+ 
+This example shows you how to read analog input from the physical world using a potentiometer. A potentiometer is a simple mechanical device that provides a varying amount of resistance when its shaft is turned. By passing voltage through a potentiometer and into an analog input on your Arduino, it is possible to measure the amount of resistance produced by a potentiometer (or pot for short) as an analog value. In this example you will monitor the state of your potentiometer using IDE console. 
+
+#### Circuit
+Connect the three wires from the potentiometer to your WeIO board. The first goes to ground from one of the outer pins of the potentiometer. The second goes from 3.3 volts to the other outer pin of the potentiometer. The third goes from analog input 31 to the middle pin of the potentiometer. 
+
+By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 3.3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3.3 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the analog voltage that you're reading as an input.
+
+The WeIO has a circuit inside called an analog-to-digital converter that reads this changing voltage and converts it to a number between 0 and 1023. When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3.3 volts going to the pin and the input value is 1023. In between, analogRead() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin. 
+
+#### Code
+
+In the program below, the only thing that you do will in the setup function is to attach myProcess function to main process with the command:
+
+**attach.process(myProcess)**
+
+Next, in myProcess function, you need to set the pin of your analog input and create an infinite loop:
+
+**pin = 31**  
+**while True:**
+
+Finally, you need to print the analog value to your monitor every 100 milliseconds. You can do this with the commands **print**, **annalogRead(pin)** and **delay()**. You can also add some text to your printed string to make it more showy :
+
+**print "analogRead pin ",pin," = ",analogRead(pin)**  
+**delay(100)**
+
+Now, when you open your IDE Monitor you should see a steady stream of numbers ranging from 0-1023, correlating to the position of the pot. As you turn your potentiometer, these numbers will respond almost instantly. 
+
+```python
+from weioLib.weio import *
+
+def setup():
+	attach.process(myProcess)
+
+def myProcess():
+	pin = 31
+	while True:
+		print "analogRead pin ",pin," = ",analogRead(pin)
+		delay(100)
+```
