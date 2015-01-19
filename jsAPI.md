@@ -1,6 +1,8 @@
+Javascript
+==========
 Boilerplate
 -----------
-### HTML & JS boilerplates
+### HTML & JS boilerplate
 This is html boilerplate for WeIO. WeIO includes dependencies : jQuery, sockJS and weioApi.
 
 ```html
@@ -15,29 +17,24 @@ This is html boilerplate for WeIO. WeIO includes dependencies : jQuery, sockJS a
   <body>
 
     <p>Hello world!</p>
+    
+    <script>
+        function onWeioReady() {
+            console.log("DOM is loaded, websocket is opened");
+        }
+    </script>
 
   </body>
 </html>
 ```
-
-To test easily these examples create a new JS file (awesomeProject.js) and add line to html file just after other libraries :
-```html
-<script data-main="weioLibs/weio" src="weioLibs/require.js"></script>
-<script src="awesomeProject.js"></script>
-```
-All examples below are written in awesomeProject.js file. For example this is "Hello world" in JS
-```javascript
-function onWeioReady() {
- console.log("Hello world");
-}
-```
 ### onWeioReady()
-This function is called when the DOM is fully loaded and websocket to WeIO is fully opened. Main difference between .ready() function from jQuery is that jQuery don't open websockets as they are not part of it's architecture. When using onWeioReady function, websocket communication with WeIO board is guaranteed, otherwise is possible to send messages to server before it fully opens it's websockets. It's recommended to use onWeioReady() instead .ready() from jQuery
+This function is called when the DOM is fully loaded and websocket to WeIO is fully opened. Main difference between .ready() function from jQuery is that jQuery don't open websockets as they are not part of it's architecture. When using onWeioReady function, websocket communication with WeIO board is guaranteed, otherwise is not possible to send messages to the server before it fully opens it's websockets. It's recommended to use onWeioReady() as a replacement for .ready() from jQuery
 ```javascript
 function onWeioReady() {
  console.log("DOM is loaded, websocket is opened");
 }
 ```
+
 Digital I/O
 -----------
 ### digitalWrite(pin, value)
@@ -85,31 +82,87 @@ function onWeioReady() {
 ```
 
 ### digitalRead(pin, callback)
-Reads actual voltage on corresponding pin. WeIO inputs are 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. See [inputMode(pin,mode)](http://github.com/nodesign/weio/wiki/Weio-GPIO-API-using-UPER-board#inputmodepin-mode) function for more options.
+Reads actual voltage on corresponding pin. WeIO inputs are 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. See pinMode(pin,mode) function for more options.
 
-DigitalRead asks to provide callback function that will be called when WeIO board finish reading state on the pin. Callback function arguments will be populated with dictionary that provides pin number and pin state as information. This example with setInterval pooling is useful to check time to time pin state, if immediate reaction is needed than see attachInterrupt function.
+In Javascript DigitalRead asks to provide callback function that will be called when WeIO board finish reading state on the pin. Callback function arguments will be populated with dictionary that provides pin number and pin state as information. This example with setInterval pooling is useful to check time to time pin state, if immediate reaction is needed than see attachInterrupt function.
 ```javascript
 function onWeioReady() {
-  setInterval(function() {
+    console.log("hello");
+    setInterval(function() {
     // Do something every 100ms
-        //pinCallback will be called when data arrives from server
-        digitalRead(13, pinCallback);
+    //pinCallback will be called when data arrives from server
+    digitalRead(0,pinCallback);
     }, 100);
 }
 
-function pinCallback(pinInput) {
-    console.log("Pin number " + String(pinInput.pin) + " is in state " +  String(pinInput.data));
-    if (pinInput.data===0) {
-        $('body').css('background', 'black');
-    } else {
-        $('body').css('background', 'white');
-    }
+function pinCallback(data) {
+    $("#phrase").html("DigitalRead Value on the pin 0 is "+ data.data);
+    $("body").css("background","white");
+    $("#phrase").css("color","black");
 }
 ```
 
-### inputMode(pin, mode)
-Sets input mode for digitalRead purpose. Available modes are : INPUT_HIGHZ, INPUT_PULLDOWN, INPUT_PULLUP
-This function activates pullups, pulldowns or high Z state on declared pins. If inputMode function is not called and digitalRead is performed pin state will be in high Z by default
+### portWrite(port, value)
+PortWrite allows faster manipulation of the i/o pins of the microcontroller. That means that you can send one byte of data that will be directly exported on 8 pins in form of HIGH and LOW signals instead sending them one by one. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+This example will blink LEDs. There is only one instruction that is called instead calling digitalWrite for each pin separately 
+```javascript
+var led = false; // false LOW, true HIGH
+
+function onWeioReady() {
+  portMode(2, OUTPUT);
+  setInterval(function() {
+    // Blinks all 3 LEDs every half second
+    if (led)
+        portWrite(2, 227)
+    else
+        portWrite(2, 255)
+    // inverts variable state
+    led = !led;
+    }, 500);
+```
+
+### portRead(port, callback)
+PortRead allows faster manipulation of the i/o pins of the microcontroller. That means that you can read one byte of data instead reading them one by one using digitalRead function. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+In Javascript portRead needs to be provided with callback function where results will be sent.
+```javascript
+
+function onWeioReady() {
+    portMode(0, INPUT);
+    console.log("DOM is loaded, websocket is opened");
+    setInterval(function(){ portRead(0, read); }, 100);
+}
+
+function read(rcv) {
+  //console.log(rcv.data);
+  $("#portReadHtml").html(rcv.data);
+}
+
+```
+### portMode(port, mode)
+Sets states on one port (8 pins) at the same time. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31 Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
+This function activates pullups, pulldowns or high Z state (INPUT only) on declared ports. 
+
+```javascript
+
+function onWeioReady() {
+    portMode(0, INPUT);
+    console.log("DOM is loaded, websocket is opened");
+    setInterval(function(){ portRead(0, read); }, 100);
+}
+
+function read(rcv) {
+  //console.log(rcv.data);
+  $("#portReadHtml").html(rcv.data);
+}
+
+```
+
+### pinMode(pin, mode)
+
+Sets state on the pin. Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
+This function activates pullups, pulldowns or high Z state (INPUT only) on declared pins. If pinMode function is not called and digitalRead is performed pin state will be in high Z by default
+
+PinMode is available directly form JavaScript
 ```javascript
 function onWeioReady() {
   // sets pulldown resistor on pin 13
@@ -126,10 +179,11 @@ function pinCallback(pinInput) {
     }
 }
 ```
+
 Analog I/O
 ----------
 ### analogRead(pin, callback)
-Reads input on specified Analog to Digital Convertor. ADC is available on pins from 25 to 32 Output is 10bits resolution or from 0-1023.
+Reads input on specified Analog to Digital Convertor. 8 ADC are available on pins from 24 to 31. Output is 10bits resolution or expressed in decimal numbers from 0-1023.
 
 AnalogRead asks to provide callback function that will be called when WeIO board finish reading state on the pin. Callback function arguments will be populated with dictionary that provides pin number and ADC value as information.
 ```javascript
@@ -153,7 +207,7 @@ function analogCallback(pinInput) {
 ```
 
 ### pwmWrite(pin, value)
-Pulse with modulation is available at 6 pins from 19-24 and has 16bits of precision. By default WeIO sets PWM frequency at 1000us and 8bit precision or from 0-255. This setup is well situated for driving LED lighting. Precision and frequency can be changed separately by calling additional functions for other uses : setPwmPeriod and setPwmLimit. PWM can also drive two different frequencies on two separate banks of 3 pins. For this feature please refer to functions : setPwmPeriod0, setPwmPeriod1, setPwmLimit0 and setPwmLimit1.
+Pulse with modulation is available at 6 pins from 18 to 23 and has 16bits of precision. By default WeIO sets PWM frequency at 1000us and it's value is expressed as percent of duty cycle from 0-100%. 
 ```javascript
 var count = 0;
 var mode = true; // fade in - true, fade out - false
@@ -166,7 +220,7 @@ function onWeioReady() {
 
 function fader() {
     if (mode) {
-        if (count < 255) {
+        if (count < 100) {
             count++;
         } else {
             mode = !mode;
@@ -183,7 +237,7 @@ function fader() {
 ```
 
 ### setPwmPeriod(period)
-Overrides default value of 1000us to set new period value for whole 6 PWM pins. Period value must be superior than 0 and inferior than 65535.
+Overrides default value of 1000us to set new period frequency for whole 6 PWM pins.
 ```javascript
 var count = 0;
 var mode = true; // fade in - true, fade out - false
@@ -214,39 +268,6 @@ function fader() {
 }
 ```
 
-### setPwmLimit(limit)
-Overrides default limit of 8bits for PWM precision. This value sets PWM counting upper limit and it's expressed as decimal value. This limit will be applied to all 6 PWM pins.
-```javascript
-var count = 0;
-var mode = true; // fade in - true, fade out - false
-
-function onWeioReady() {
-  setPwmLimit(512);
-  setInterval(function() {
-    // Do something every 20ms
-    fader();
-    }, 20);
-}
-
-function fader() {
-    if (mode) {
-        if (count < 512) {
-            count++;
-        } else {
-            mode = !mode;
-        }
-    } else {
-        if (count > 0) {
-            count--;
-        } else {
-            mode = !mode;
-        }
-    }
-    pwmWrite(20,count);
-}
-```
-
-
 ### startPackaging() and stopPackage()
 Activate instruction buffering. In some cases it's more optimized to put a lot of instructions in one package and than send package. In that case for example instead sending 8 separate messages one packet will be send that contains 8 messages packed together. To start package buffering call startPackage() function. To send a package call sendPackage()
 ```javascript
@@ -259,6 +280,33 @@ for (var j=0; j<7; j++) {
     }
 }
 sendPackage();
+```
+
+WeIO info
+=========
+### versionWeIO
+Gets actual version of WeIO software
+
+Interfaces
+==========
+
+Serial port
+-----------
+### listSerials()
+List available serial ports on WeIO. By default there are 3 serial ports /dev/ttyACM1, /dev/ttyACM0, /dev/ttyATH0. Each of them has it's own function. ttyACM1 is WeIO serial port that is connected to pins 0-RX and 1-TX. ttyACM0 is reserved for communication with LPC processor and ttyATH0 is reserved for user console via micro USB (you should not touch these two ports).
+WeIO has integrated drivers for the most common USB to serial devices so It's perfectly possible to connect some serial device over USB and communicate with it.
+
+In Javascript call listSerials and provide callback function that will be called once data is ready and sent from the server.
+
+```javascript
+      function onWeioReady() {
+       console.log("DOM is loaded, websocket is opened");
+       listSerials(listPorts);
+      }
+      
+      function listPorts(ports) {
+          console.log(ports.data);
+      }
 ```
 
 Client-server I/O

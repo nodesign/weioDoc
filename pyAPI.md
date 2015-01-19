@@ -1,95 +1,140 @@
+Python
+======
 Boilerplate
 -----------
 ### Python boilerplate
 This is "Hello world" program written in Python. It prints "hello world" on console and blinks LED.
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-
-def setup():
-    attach.process(myProcess)
-
-def myProcess():
-    print("Hello world")
-    pause = 100
-    while True:
-        digitalWrite(20, HIGH)
-        delay(pause)
-        digitalWrite(20, LOW)
-        delay(pause)
-```
-Digital I/O
------------
-### digitalWrite(pin, value)
-Sets voltage to +3.3V or Ground on corresponding pin. This function takes two parameters : pin number and it's state that can be HIGH = +3.3V or LOW = Ground.
-```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
+from weioLib.weio import *
 
 def setup():
     attach.process(myProcess)
     
 def myProcess():
-    while True :
-        digitalWrite(18,LOW)
-        delay(70)
-        digitalWrite(20,HIGH)
-        delay(70)
-        digitalWrite(19,LOW)
-        delay(70)
-        digitalWrite(18,HIGH)
-        delay(70)
-        digitalWrite(20,LOW)
-        delay(70)
-        digitalWrite(19,HIGH)
-        delay(70)
+    print("Hello world")
 
+```
+
+Digital I/O
+-----------
+### digitalWrite(pin, value)
+Sets voltage to +3.3V or Ground on corresponding pin. This function takes two parameters : pin number and it's state that can be HIGH = +3.3V or LOW = Ground.
+
+```python
+from weioLib.weio import *
+
+def setup() :
+    attach.process(blinky)
+
+def blinky() :
+    while True:
+        digitalWrite(20, HIGH)
+        delay(500)
+        digitalWrite(20, LOW)
+        delay(500)
 ```
 ### digitalRead(pin)
-Reads actual voltage on corresponding pin. WeIO board is 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. If pinMode function is not called and digitalRead is performed pin state will be in high Z by default. See [inputMode(pin,mode)](http://github.com/nodesign/weio/wiki/Weio-GPIO-API-using-UPER-board#inputmodepin-mode) function for more options.
+Reads actual voltage on corresponding pin. WeIO inputs are 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. See pinMode(pin,mode) function for more options.
+
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-import time
+from weioLib.weio import *
 
-def setup() :
-    attach.process(loop)
-
-def loop() :
-    pin = 25
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    pin = 0
     while True:
-        val =  digitalRead(pin)
-        print (val)
-        delay(20)
-
+        a = digitalRead(pin)
+        print "Value on the pin ", pin, " = ", a
+        delay(100)
 ```
+### portWrite(port, value)
+PortWrite allows faster manipulation of the i/o pins of the microcontroller. That means that you can send one byte of data that will be directly exported on 8 pins in form of HIGH and LOW signals instead sending them one by one. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+This example will blink LEDs. There is only one instruction that is called instead calling digitalWrite for each pin separately 
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(2, OUTPUT)
+    while True:
+        # this is direct port manipulation
+        # instead calling digitalWrite for each pin
+        portWrite(2, 227)
+        delay(500)
+        portWrite(2, 255)
+        delay(500)
+```
+
+### portRead(port)
+PortRead allows faster manipulation of the i/o pins of the microcontroller. That means that you can read one byte of data instead reading them one by one using digitalRead function. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(0, INPUT)
+    while True:
+        print(portRead(0))
+        delay(20)
+```
+### portMode(port, mode)
+Sets states on one port (8 pins) at the same time. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31 Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
+This function activates pullups, pulldowns or high Z state (INPUT only) on declared ports. 
+
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(0, INPUT)
+    while True:
+        print(portRead(0))
+        delay(20)
+```
+
+
 ### pinMode(pin, mode)
-Sets pin mode for digitalRead purpose. Available modes are : INPUT_HIGHZ, INPUT_PULLDOWN, INPUT_PULLUP, OUTPUT
-This function activates pullups, pulldowns, high Z state or output mode on declared pins. If pinMode function is not called and digitalRead is performed pin state will be in high Z by default
+
+Sets state on the pin. Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
+This function activates pullups, pulldowns or high Z state (INPUT only) on declared pins. If pinMode function is not called and digitalRead is performed pin state will be in high Z by default
+
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-import time
+from weioLib.weio import *
 
-def setup() :
-    attach.process(loop)
-
-def loop() :
-    pin = 25
-    inputMode(pin,INPUT_PULLDOWN)
-    while True:
-        val =  digitalRead(pin)
-        print (val)
-        delay(20)
-
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    
+    while True :
+        # setting pull up resistor, result will print 1
+        pinMode(0, PULL_UP)
+        for a in range(0,5):
+            print digitalRead(0)
+            delay(100)
+            
+        # setting pull down resistor, result will print 0
+        pinMode(0, PULL_DOWN)
+        for a in range(0,5):
+            print digitalRead(0)
+            delay(100)
 ```
+
 Analog I/O
------------
-### analogRead(pin)
-Reads input on specified Analog to Digital Convertor. ADC is available on pins from 25 to 32 Output is 10bits resolution or from 0-1023. ATTENTION when used ADC voltage tolerance is 3.3V maximum. ADC circuit is NOT 5V tolerant
+----------
+### analogRead(pin, callback)
+Reads input on specified Analog to Digital Convertor. 8 ADC are available on pins from 24 to 31. Output is 10bits resolution or expressed in decimal numbers from 0-1023. All WeIO pins are 5V tolerant except ADC pins when they are reading analog signals. Be careful not to administrate more than 3.3V on these pins when performing analog read.
+
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
+from weioLib.weio import *
 
 def setup():
     attach.process(myProcess)
@@ -98,163 +143,210 @@ def myProcess():
     pin = 31
     while True:
         print "analogRead pin ",pin," = ",analogRead(pin)
-        delay(20)
-
+        # give peace a chance and not push cpu to 100%
+        delay(100)
 ```
+
 ### pwmWrite(pin, value)
-Pulse with modulation is available at 6 pins from 19-24 and has 16bits of precision. By default WeIO sets PWM frequency at 20000ms and 8bit precision or from 0-255. This setup is well situated for driving LED lighting. Precision and frequency can be changed separately by calling additional functions for other uses : setPwmPeriod and setPwmLimit. PWM can also drive two different frequencies on two separate banks of 3 pins. For this feature look functions : setPwmPeriod0, setPwmPeriod1, setPwmLimit0 and setPwmLimit1.
+Pulse with modulation is available at 6 pins from 18 to 23 and has 16bits of precision. By default WeIO sets PWM frequency at 1000us and it's value is expressed as percent of duty cycle from 0-100%. 
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
+from weioLib.weio import *
 
-def setup() :
-    attach.process(loop)
+def setup():
+    # attaches "fadeInOut" fuction to infinite loop
+    attach.process(fadeInOut)
     
-def loop() :
-    
+def fadeInOut():
+    # create infinite loop
     while True:
+        
+        # print "fade in" in the console
         print "fade in"
-        # count from 0 to 255 
-        for i in range(256):
-            pwmWrite(18,i)
-            pwmWrite(19,i)
+        # count from 0 to 100 % 
+        for i in range(0,100):
+            # change PWM duty cycle to i
             pwmWrite(20,i)
-            delay(3)
             
-        print "fade out"    
-        for i in range(256):
-            pwmWrite(18,255-i)
-            pwmWrite(19,255-i)
-            pwmWrite(20,255-i)
-            delay(3)
+        # print "fade out" in the console
+        print "fade out"  
+        # count from 0 to 100 % 
+        for i in range(0,100):
+            # change PWM duty cycle to 100-i
+            pwmWrite(20,100-i)
 ```
-
 ### setPwmPeriod(period)
-Overrides default value of 1000us to set new period value for whole 6 PWM pins. Period value must be superior than 0 and inferior than 65535.
+Overrides default value of 1000us to set new period frequency for whole 6 PWM pins.
+
+### tone(pin, frequency, duration=0)
+Generates a square wave of the specified frequency (and 50% duty cycle) on a pin. A duration can be specified, otherwise the wave continues until a call to noTone(). The pin can be connected to a piezo buzzer or other speaker to play tones. Tone function can be used only on PWM pins on WeIO (18,19,20,21,22,23)
+
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-
-def setup() :
-    attach.process(loop)
-    
-def loop() :
-
-    setPwmPeriod(500)
-    while True:
-        print "fade in"
-        # count from 0 to 255 
-        for i in range(256):
-            pwmWrite(18,i)
-            pwmWrite(19,i)
-            pwmWrite(20,i)
-            delay(3)
-            
-        print "fade out"    
-        for i in range(256):
-            pwmWrite(18,255-i)
-            pwmWrite(19,255-i)
-            pwmWrite(20,255-i)
-            delay(3)
-```
-
-### setPwmLimit(limit)
-Overrides default limit of 8bits for PWM precision. This value sets PWM counting upper limit and it's expressed as decimal value. This limit will be applied to all 6 PWM pins.
-```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-
-def setup() :
-    attach.process(loop)
-
-def loop() :
-    setPwmLimit(512)
-    while True:
-        print "fade in"
-        # count from 0 to 255 by 5
-        for i in range(513):
-            pwmWrite(19,i)
-            pwmWrite(20,i)
-            pwmWrite(21,i)
-            delay(3)
-        print "fade out"
-        for i in range(0,513):
-            pwmWrite(19,512-i)
-            pwmWrite(20,512-i)
-            pwmWrite(21,512-i)
-            delay(3)
-```
-
-SPI protocol
-------------
-### initSPI(port, divider=1, mode=0)
-Returns SPI object on specified port. There are 2 SPI ports on WeIO board. Port 0 on pins 2(MOSI),3(MISO),4(SCK) and Port 1 on pins 8(MOSI),9(MISO),10(SCK).
-Optional parameters :
-Divider is SPI clock divider. SPI clock speed will be maximum clock speed (2MHz) divided by this value. Optional, default 1.
-Mode is SPI mode number defining clock polarity and clock edge. See SPI specification for more details. There are 4 possible modes (0-3)
-```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-import struct
+from weioLib.weio import *
 
 def setup():
     attach.process(myProcess)
     
 def myProcess():
-    print("SPI starts")
-    spi = initSPI(0) # init SPI on port 0 (pins : 2,3,4)
-    chipSelect = 5
-    while True :
-        # run thru all 8 outputs of 74HC595
-        b = 0
-        for i in range(9):
-            digitalWrite(chipSelect, LOW)
-            spi.transaction(struct.pack("B", b))
-            digitalWrite(chipSelect, HIGH)
-            b = 1
-            b = b<<i
-            delay(100)
+    f = 0
+    while True:
+        tone(23, f)
+        f+=1
+        print "freq = ", f
+        if (f>3000):
+            f = 0
+        delay(20)
 ```
 
-### transaction(data, response = 0)
-Sends byte/bytes of information and returns response if asked.
+### noTone(pin)
+Stops the generation of a square wave triggered by tone(). Has no effect if no tone is being generated.
 ```python
-from weioLib.weioIO import *
-from weioLib.weioUserApi import attach
-import struct
+from weioLib.weio import *
 
 def setup():
     attach.process(myProcess)
     
 def myProcess():
-    print("SPI starts")
-    spi = initSPI(0) # init SPI on port 0 (pins : 2,3,4)
-    chipSelect = 5
-    while True :
-        # run thru all 8 outputs of 74HC595
-        b = 0
-        for i in range(9):
-            digitalWrite(chipSelect, LOW)
-            spi.transaction(struct.pack("B", b))
-            digitalWrite(chipSelect, HIGH)
-            b = 1
-            b = b<<i
-            delay(100)
+    tone(23, 1500)
+    delay(3000)
+    noTone(23)
 ```
 
+Time
+----
+### millis()
+Returns the number of milliseconds since the user program began running on the WeIO board.
 
-Interrupts
+
+### delay(milliseconds)
+Pauses the program for the amount of time (in miliseconds) specified as parameter. (There are 1000 milliseconds in a second.)
+from weioLib.weio import *
+
+```python
+def setup() :
+    
+    # Attaches blinky function to infinite loop
+    attach.process(blinky)
+
+def blinky() :
+    
+    while True:
+        
+        # write HIGH value to digital PINS 18, 19 & 20
+        digitalWrite(18, HIGH) # red led
+        digitalWrite(19, HIGH) # green led
+        digitalWrite(20, HIGH) # blue led
+        
+        # wait 100ms
+        delay(100)
+        
+        # write LOW value to digital PINS 18, 19 & 20
+        digitalWrite(18, LOW) # red led
+        digitalWrite(19, LOW) # green led
+        digitalWrite(20, LOW) # blue led
+        
+        # wait 100ms
+        delay(100)
+```
+Calculation
+-----------
+### constrain(x, a, b)
+Constrains a number to be within a range.
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    val = analogRead(24)
+    # constrain values between 300 & 500
+    p = constrain(val, 300,500)
+    print p
+```
+
+### proportion(value, fromLow, fromHigh, toLow, toHigh)
+Re-maps a number from one range to another. That is, a value of fromLow would get mapped to toLow, a value of fromHigh to toHigh, values in-between to values in-between, etc. Does not constrain values to within the range, because out-of-range values are sometimes intended and useful. The constrain() function may be used either before or after this function, if limits to the ranges are desired. It returns floating point number. Proportion is called map() in Arduino jargon but as this word is already reserved in Python in WeIO is called proportion()
+
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    val = analogRead(24)
+    
+    p = proportion(val, 300,500, 0,255)
+    print p
+```
+
+WeIO info
+---------
+### versionWeIO()
+Returns actual version of WeIO software
+
+Interfaces
 ----------
-### attachInterrupt(pin, mode, callback) 
-Attaches signal interrupt on pin and calls given function each time when signal condition is fulfilled. Signal can fire interrupt on these conditions : signal is HIGH, signal is LOW, signal CHANGE, signal RISING and signal FALLING. There can be 8 interruptions declared. If you want to stop interruption on pin call detachInterruption(pin) function.
-Callback function that is provided will be filled in option by integer type of signal change that occurred. Use interruptType[iType] to decode integer in human readable format : RISING, FALLING,...
 
-Comming soon...
+Serial port
+-----------
+### Serial(baudrate, port='/dev/ttyACM1', timeout=1)
+This function initialize serial port interface on WeIO board and returns pySerial object. All documentation and code that is written for pySerial can be used directly inside WeIO. Reason why we are using our weioSerial module instead of pySerial is that WeIO needs to execute a few operations to put pins 0 - RX and 1 - TX into serial port mode before initializing pySerial. Complete pySerial documentation can be found here : http://pyserial.sourceforge.net/pyserial_api.html
 
-### detachInterrupt(pin)
-Attaches signal interrupt on pin and calls given function each time when signal condition is fulfilled. Signal can fire interrupt on these conditions : signal is HIGH, signal is LOW, signal CHANGE, signal RISING and signal FALLING. There can be 8 interruptions declared. If you want to stop interruption on pin call detachInterruption(pin) function.
-Callback function that is provided will be filled in option by integer type of signal change that occurred. Use interruptType[iType] to decode integer in human readable format : RISING, FALLING,...
+### listSerials()
+List available serial ports on WeIO. By default there are 3 serial ports /dev/ttyACM1, /dev/ttyACM0, /dev/ttyATH0. Each of them has it's own function. ttyACM1 is WeIO serial port that is connected to pins 0-RX and 1-TX. ttyACM0 is reserved for communication with LPC processor and ttyATH0 is reserved for user console via micro USB (you should not touch these two ports).
+WeIO has integrated drivers for the most common USB to serial devices so It's perfectly possible to connect some serial device over USB and communicate with it.
 
-Comming soon...
-### This is attached callback to interrupt
-Comming soon...
+### read(size=1)
+Performs reading of one byte (size=1 by default) from serial port. Size argument (optional) express number of bytes to read. If a timeout is set (for example in constructor of serial object) it may return less characters as requested. With no timeout it will block until the requested number of bytes is read.
+
+### write(data)
+Performs writing the string data to the serial port. 
+
+
+I2C via SMBus
+-------------
+
+### SMBus()
+WeIO uses SMBus interface to talk to i2c devices. All SMbus instructions are supported and all drivers written in Python for SMBus can be directly used inside WeIO. Only the most commonly used instructions will be documented here for all SMBus features please refer to official Python SMBus documentation.
+
+As WeIO uses it's own port of SMBus interface SMBus is imported in your project by calling from weioLib.weioSmbus import SMBus. 
+```python
+from weioLib.weio import *
+# Comment this line below and use WeIO implementation
+# from smbus import SMBus
+from weioLib.weioSmbus import SMBus
+
+myI2C = SMBus()
+```
+As WeIO has only one i2c interface any argument that is passed to constructor regarding i2c port will be ignored.
+
+### scan()
+Scans i2c bus for all connected devices and returns their addresses inside an array. This function is not part of standard SMBus driver, it exists only in WeIO implementation.
+
+```python
+from weioLib.weio import *
+from weioLib.weioSmbus import SMBus
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    myI2C = SMBus()
+    
+    print "list i2c devices on the bus", myI2C.scan()
+```
+### read_byte(address)
+Perform i2c read byte from given address
+
+### write_byte(address, value)
+Perform write one byte of data to given device address
+
+### read_byte_data(address, command)
+Perform read byte operation from given address of device and given command
+
+### write_byte_data(address, command)
+Perform write byte operation to given address of device and given command
+
+SPI
+---
