@@ -54,21 +54,18 @@ html, body {
 body {
     background: #000000;
 }
-
-#slider-vertical {
+.slider-vertical {
     bottom: 0px;
     z-index: 10000;
     min-height: 544px;
     width: 100%;
     height: 100%;
 }
-
 .ui-slider-handle {
     display: none;
     overflow: hidden;
 }
-
-#slider-vertical, .ui-slider, .ui-slider-vertical, .ui-widget, .ui-widget-content, .ui-corner-all, .ui-slider-range, .ui-widget-header, .ui-slider-range-min {
+.slider-vertical, .ui-slider, .ui-slider-vertical, .ui-widget, .ui-widget-content, .ui-corner-all, .ui-slider-range, .ui-widget-header, .ui-slider-range-min {
     position: absolute !important;
 }
 ```
@@ -79,31 +76,24 @@ This function is the heart of this simple project. All logic and calculation is 
 ````javascript
 var p_id = 0;
 $(function() {
-    $( "#slider-vertical" ).slider({
-    orientation: "vertical",
-    range: "min",
-    min: 0,
-    max: 255,
-    value: 10,
-    slide: function( event, ui ) {
-
-    var id = ui.value;
-
-        if (id != p_id) {
-
-            var hue = (1.0/255.0)*ui.value;
-            var ledColor = HSVtoRGB(hue,1.0,1.0);
-
-            pwmWrite(21,ledColor.r);
-            pwmWrite(20,ledColor.g);
-            pwmWrite(19,ledColor.b);
-
-            changeColorFromWeio(ledColor);
+    $("#slider-vertical").slider({
+        orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 255,
+        value: 10,
+        slide: function(event, ui) {
+            var id = ui.value;
+            if (id != p_id) {
+                var hue = (1.0 / 255.0) * ui.value;
+                var ledColor = HSVtoRGB(hue, 1.0, 1.0);
+                pwmWrite(21, ledColor.r);
+                pwmWrite(20, ledColor.g);
+                pwmWrite(19, ledColor.b);
+                changeColorFromWeio(ledColor);
+            }
+            p_id = id;
         }
-
-    p_id = id;
-    }
-
     });
 });
 ```
