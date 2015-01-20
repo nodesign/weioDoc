@@ -17,90 +17,6 @@ def myProcess():
 
 Digital I/O
 -----------
-### digitalWrite(pin, value)
-Sets voltage to +3.3V or Ground on corresponding pin. This function takes two parameters : pin number and it's state that can be HIGH = +3.3V or LOW = Ground.
-
-```python
-from weioLib.weio import *
-
-def setup() :
-    attach.process(blinky)
-
-def blinky() :
-    while True:
-        digitalWrite(20, HIGH)
-        delay(500)
-        digitalWrite(20, LOW)
-        delay(500)
-```
-### digitalRead(pin)
-Reads actual voltage on corresponding pin. WeIO inputs are 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. See pinMode(pin,mode) function for more options.
-
-```python
-from weioLib.weio import *
-
-def setup():
-    attach.process(myProcess)
-    
-def myProcess():
-    pin = 0
-    while True:
-        a = digitalRead(pin)
-        print "Value on the pin ", pin, " = ", a
-        delay(100)
-```
-### portWrite(port, value)
-PortWrite allows faster manipulation of the i/o pins of the microcontroller. That means that you can send one byte of data that will be directly exported on 8 pins in form of HIGH and LOW signals instead sending them one by one. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
-This example will blink LEDs. There is only one instruction that is called instead calling digitalWrite for each pin separately 
-```python
-from weioLib.weio import *
-
-def setup():
-    attach.process(myProcess)
-    
-def myProcess():
-    portMode(2, OUTPUT)
-    while True:
-        # this is direct port manipulation
-        # instead calling digitalWrite for each pin
-        portWrite(2, 227)
-        delay(500)
-        portWrite(2, 255)
-        delay(500)
-```
-
-### portRead(port)
-PortRead allows faster manipulation of the i/o pins of the microcontroller. That means that you can read one byte of data instead reading them one by one using digitalRead function. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
-```python
-from weioLib.weio import *
-
-def setup():
-    attach.process(myProcess)
-    
-def myProcess():
-    portMode(0, INPUT)
-    while True:
-        print(portRead(0))
-        delay(20)
-```
-### portMode(port, mode)
-Sets states on one port (8 pins) at the same time. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31 Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
-This function activates pullups, pulldowns or high Z state (INPUT only) on declared ports. 
-
-```python
-from weioLib.weio import *
-
-def setup():
-    attach.process(myProcess)
-    
-def myProcess():
-    portMode(0, INPUT)
-    while True:
-        print(portRead(0))
-        delay(20)
-```
-
-
 ### pinMode(pin, mode)
 
 Sets state on the pin. Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
@@ -128,6 +44,96 @@ def myProcess():
             delay(100)
 ```
 
+### digitalWrite(pin, value)
+Sets voltage to +3.3V or Ground on corresponding pin. This function takes two parameters : pin number and it's state that can be : 
+* HIGH = +3.3V 
+* LOW = Ground.
+
+```python
+from weioLib.weio import *
+
+def setup() :
+    attach.process(blinky)
+
+def blinky() :
+    while True:
+        digitalWrite(20, HIGH)
+        delay(500)
+        digitalWrite(20, LOW)
+        delay(500)
+```
+
+### digitalRead(pin)
+Reads actual voltage on corresponding pin. WeIO inputs are 5V TOLERANT. There are two possible answers : 0 if pin is connected to the Ground or 1 if positive voltage is detected. If only digitalRead function is provided, pin will be in HIGH Z state. See pinMode(pin,mode) function for more options.
+
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    pin = 0
+    while True:
+        a = digitalRead(pin)
+        print "Value on the pin ", pin, " = ", a
+        delay(100)
+```
+
+### portMode(port, mode)
+Sets states on one port (8 pins) at the same time. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31 Available modes are : PULL_UP, PULL_DOWN, INPUT and OUTPUT
+This function activates pullups, pulldowns or high Z state (INPUT only) on declared ports. 
+
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(0, INPUT)
+    while True:
+        print(portRead(0))
+        delay(20)
+```
+
+### portWrite(port, value)
+PortWrite allows faster manipulation of the i/o pins of the microcontroller. That means that you can send one byte of data that will be directly exported on 8 pins in form of HIGH and LOW signals instead sending them one by one. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+This example will blink LEDs. There is only one instruction that is called instead calling digitalWrite for each pin separately 
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(2, OUTPUT)
+    while True:
+        # this is direct port manipulation
+        # instead calling digitalWrite for each pin
+        portWrite(2, 227)
+        delay(500)
+        portWrite(2, 255)
+        delay(500)
+```
+*Note : Before writing a port value, the port must be configured. See __portMode__ for more details.*
+
+### portRead(port)
+PortRead allows faster manipulation of the i/o pins of the microcontroller. That means that you can read one byte of data instead reading them one by one using digitalRead function. There are 4 available ports on the board. Port 0 for pins 0-7, Port 1 for pins 8-15, Port 2 for pins 16-23 and Port 3 for pins 24-31
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+    
+def myProcess():
+    portMode(0, INPUT)
+    while True:
+        print(portRead(0))
+        delay(20)
+```
+*Note : Before reading a port value, the port must be configured. See __portMode__ for more details.*
+
 Analog I/O
 ----------
 ### analogRead(pin, callback)
@@ -148,7 +154,7 @@ def myProcess():
 ```
 
 ### pwmWrite(pin, value)
-Pulse with modulation is available at 6 pins from 18 to 23 and has 16bits of precision. By default WeIO sets PWM frequency at 1000us and it's value is expressed as percent of duty cycle from 0-100%. 
+Pulse Width Modulation (PWM) is available on 6 pins from 18 to 23 and has a 16bits resolution. By default WeIO sets PWM frequency at 1kHz and it's value is expressed as percent of duty cycle from 0-100%.
 ```python
 from weioLib.weio import *
 
@@ -291,7 +297,7 @@ Interfaces
 Serial port
 -----------
 ### Serial(baudrate, port='/dev/ttyACM1', timeout=1)
-This function initialize serial port interface on WeIO board and returns pySerial object. All documentation and code that is written for pySerial can be used directly inside WeIO. Reason why we are using our weioSerial module instead of pySerial is that WeIO needs to execute a few operations to put pins 0 - RX and 1 - TX into serial port mode before initializing pySerial. Complete pySerial documentation can be found here : http://pyserial.sourceforge.net/pyserial_api.html
+This function initialize serial port interface on WeIO board and returns a pySerial object. All documentation and code that is written for pySerial can be used directly inside WeIO. Reason why we are using our weioSerial module instead of pySerial is that WeIO needs to execute a few operations to put pins 0 - RX and 1 - TX into serial port mode before initializing pySerial. Complete pySerial documentation can be found here : http://pyserial.sourceforge.net/pyserial_api.html
 
 ### listSerials()
 List available serial ports on WeIO. By default there are 3 serial ports /dev/ttyACM1, /dev/ttyACM0, /dev/ttyATH0. Each of them has it's own function. ttyACM1 is WeIO serial port that is connected to pins 0-RX and 1-TX. ttyACM0 is reserved for communication with LPC processor and ttyATH0 is reserved for user console via micro USB (you should not touch these two ports).
@@ -306,6 +312,7 @@ Performs writing the string data to the serial port.
 
 I2C via SMBus
 -------------
+__Important note about I2C__ : To work properly, the I2C bus needs two external pull-up on both SDA and SCL line. The typical value for these pull-up is 4k7.
 
 ### SMBus()
 WeIO uses SMBus interface to talk to i2c devices. All SMbus instructions are supported and all drivers written in Python for SMBus can be directly used inside WeIO. Only the most commonly used instructions will be documented here for all SMBus features please refer to official Python SMBus documentation.
