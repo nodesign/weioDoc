@@ -357,3 +357,41 @@ Perform write byte operation to given address of device and given command
 
 SPI
 ---
+WeIO has two SPI bus with the following pinout :
+* SPI0 : pin2 : MOSI; pin3 : MISO; pin4 : SCK
+* SPI1 : pin8 : MOSI; pin9 : MISO; pin5 : SCK
+Since there's no dedicated chip select (CS) pin, the chip select must be managed with a digital IO.
+
+Here's an example of the SPI initialization.
+```python
+from weioLib.weio import *
+from weioLib.weioSPI import SPILib
+
+mySPI = SPILib()
+```
+SPILib can take three arguments which are : port, divider and mode. By default, if no arguments are passed to the constructor, port=0, divider=1 and mode=0.
+*Port* specify the SPI bus number (0 or 1). *Divider* allow to divide the default SPI frequency (2MHz / *divider*). *Mode* specify the behavior of polarity and phase of the SCK signal, as described here : http://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Mode_numbers
+
+### read_byte()
+Read one byte on the SPI bus
+
+### write_byte(value)
+Write one byte on the SPI bus
+
+### read_byte_data(cmd)
+This command will write the byte sepcified by **cmd** and read the value returned by the device.
+
+### write_byte_data(cmd, val)
+This command will write two bytes (**cmd** and **val**). 
+
+### read_word_data(cmd)
+This command write a byte specified by *cmd* and read a word (two bytes) from the device.
+
+### write_word_data(cmd, val)
+This command write a byte specified by *cmd* followed by a word specified by *val*.
+
+### read_block_data(cmd)
+This command write the *cmd* byte and then read 32 bytes from the device. The returned value is a *list*. This command is useful for accessing memory devices.
+
+### write_block_data(cmd, vals)
+This command write the *cmd* byte followed by the bytes contained in *vals*. *vals* must be a *list*. 
