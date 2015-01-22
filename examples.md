@@ -1,6 +1,6 @@
 Drive color LED from HTML5
 ==========================
-![WeIO LED slider](gifs/sliderIphone.jpg)
+![WeIO LED slider](gifs/sliderIphone.gif)
 In this example the idea is to drive RGB LED on WeIO board only using HTML5. Main idea behind is to make one slider with 255 steps and use them to change Hue component of the color.
 
 
