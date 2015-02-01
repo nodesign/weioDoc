@@ -14,11 +14,20 @@ Choose from available networks on your computer "WeIO rescue" and type inside yo
 This will prompt you the signup screen. If this address don't work it's possible that you don't have support for Bonjour on your machine.
 However you can always type http://10.0.0.1:8080 and get in WeIO. If this problem persists, just click on the button "Soft Reset" on the board.
 
-Please fill in all fields. After setting up root password two additional services will be created : SSH access and SAMBA access. (note that ssh will be accessible by ssh root@weio.local but SAMBA will use weio username and the same password as root, these settings can be changed later) As the default DNS name is weio.local by choosing a new one WeIO will be accessible by somename.local. Finally choosing correct country will affect WiFi regional settings and channel settings for radio.
+Please fill in all fields. After setting up root password two additional services will be created : SSH access and SAMBA access. 
 
 WeIO IDE environnement is now present on the screen. The next thing to do is to connect WeIO to your local WiFi network or so called STA network.
 
 Feel free to explore WeIO WiFi configurator and try to create your own networks or to connect to existants. Once WeIO connected to Internet it will update it's local time and date, updates will be accessibles and other objects or services on the network can be directly accessed.
+
+### SSH server
+WeIO is available over ssh connection using root as username. Password is the same one provided during signup procedure
+```shell
+ssh root@weio.local
+```
+### Samba server
+WeIO is available over SMB or Samba sharing. This is used to explore contents of your projects or sources of WeIO platform. This is also  useful for transfering or backuping data between PC and WeIO board. Those who prefer using their own developement tools are welcome using SMB so they can edit codes externally from their prefered IDE.
+SAMBA sharing can be accesed using "weio" as username and password is the same one provided during signup procedure.
 
 ### "Hello World" with WeIO
 This example shows how to blink white light (by turning on RED, GREEN and BLUE LEDs at the same time).
