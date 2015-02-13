@@ -12,11 +12,12 @@ This examples shows you how to read analog input from the physical world using a
 
 #### Circuit
 ![WeIO Fritzing analogRead](images/analogRead_JS&PY.png)
-
-Connect the three wires from the potentiometer to your WeIO board. The first goes to ground from one of the outer pins of the potentiometer. The second goes from 3.3 volts to the other outer pin of the potentiometer. The third goes from analog input 31 to the middle pin of the potentiometer. 
-
-By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 3.3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3.3 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the analog voltage that you're reading as an input.
-
+Connect the three wires from the potentiometer to your WeIO board. The first goes to ground from one of the outer pins of the potentiometer. The second goes from 3.3 volts to the other outer pin of the potentiometer. The third goes from analog input 31 to the middle pin of the potentiometer.
+<br></br>
+By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer.
+<br></br>
+This changes the voltage at the center pin. When the resistance between the center and the side connected to 3.3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3.3 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the analog voltage that you're reading as an input.
+<br></br>
 The WeIO has a circuit inside called an analog-to-digital converter that reads this changing voltage and converts it to a number between 0 and 1023. When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3.3 volts going to the pin and the input value is 1023. In between, **analogRead()** returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin. 
 
 #### Code: analogRead_PY
@@ -149,14 +150,14 @@ Digital
 This example shows the simplest thing you can do with a WeIO to see physical output: it blinks an RGB LED on board.
 
 #### Circuit
-WeIO have an RGB LED attached to pins 18, 19 and 20 on the board itself. If you run this example with no hardware attached, you should see that LED blink. 
-
 ![WeIO Fritzing blink](images/blink_PY.png)
-
+WeIO have an RGB LED attached to pins 18, 19 and 20 on the board itself. If you run this example with no hardware attached, you should see that LED blink.
+<br></br>
 To build the circuit with an RGB LED, attach 220-ohm resistor to long leg and connect it to ground. Then attach pins 18, 19 and 20 to red, gren and blue legs, respectively.
-
+<br></br>
 Now when you run your code you should see that board LED plus external LED blink.
 
+  
 #### Code
 In the program below, the first thing you do is to attach **blinky()** function to main process with the command :
 
@@ -214,13 +215,11 @@ def blinky() :
 This example shows the simplest thing you can do with a WeIO to do physical actions from user interface: it turns on and off an RGB LED on board by touching or cliking your screen.
 
 #### Circuit
-
 ![WeIO Fritzing analogRead](images/blink_PY.png)
-
 WeIO have an RGB LED attached to **pins 18, 19 and 20** on the board itself. If you run this example with no hardware attached, you should see that LED turn on or off.
-
+<br></br>
 To build the circuit with an RGB LED, attach 220-ohm resistor to long leg and connect it to ground. Then attach **pins 18, 19 and 20** to red, gren and blue legs, respectively.
-
+<br></br>
 Now when you run your code and go to web user interface you should control the state of that board LED plus external LED.
 
 
@@ -339,13 +338,12 @@ This example shows you how to set input mode for digitalRead purpose. Using **ID
 
 #### Circuit
 ![WeIO Fritzing analogRead](images/pinMode_PY.png)
-
 Connect two wires, red and black, from **3.3 volts** and ground pins to the two push-buttons. Then connect orange wire from digital **pin 24** to push-button connected to **3.3 volts** and purple wire from digital **pin 25** to push-button connected to ground pin.
-
+<br></br>
 When the push-buttons are open (unpressed) there is no connection between the two legs of the pushbuttons, so the pins are not connected. When the buttons are closed (pressed), it makes a connection between their two legs, connecting the **pin 24** to **3.3 volts** and the **pin 25** to **ground**, so that we read  **HIGH** and  **LOW** values on corresponding pins.
-
+<br></br>
 When the push-buttons are open pull-down resistor on the **pin 24** keep the input **LOW** and pull-up resistor on the **pin 25** keep the input **HIGH**.
-
+<br></br>
 If you don't set internal pull-up and pull-down resistors the digital value printed in the IDE console could be false. This is because the input is "floating", it will randomly return either **HIGH** or **LOW**. That's why you need a pull-up and pull-down resistor in the circuit. 
 
 #### Code
@@ -434,10 +432,11 @@ pythonAndJS
 This example shows you how to send messages from javascript to python using **genericMessage()** function.
 
 #### circuit 
+![WeIO Fritzing analogRead](images/blink_PY.png)
 WeIO have an RGB LED attached to **pins 18, 19 and 20** on the board itself. If you run this example with no hardware attached, you should see that LED turn on or off.
-
+<br></br>
 To build the circuit with an RGB LED, attach 220-ohm resistor to long leg and connect it to ground. Then attach **pins 18, 19 and 20** to red, gren and blue legs, respectively.
-
+<br></br>
 Now when you run your code and go to web user interface you should control the state of that board LED plus external LED.
 
 #### code
