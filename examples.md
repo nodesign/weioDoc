@@ -596,6 +596,7 @@ Now when you open the web user interface you should see a new phrase every 200 m
 ```
 
 ##### Custom CSS style: myStyle.css
+This simple CSS shows you how to stylize your user interface:
 
 ```css
 body {
@@ -609,12 +610,20 @@ p {
     text-align:center;
 }
 ```
-
 ### smartphoneGyro
 
-This example shows you how to read your smartphone gyroscope, diplay angle values on the user interface and monitor on the IDE console.
+This example shows you how to read smartphone gyroscope, diplay angle values on the user interface and monitor on the IDE console.
 
 #### code
+In the program below the visible page content, the body, contains three paragraphs with ids **"alpha"**, **"beta"** and **"gamma"**. This paragraphs will be used to display smartphone gyroscope angles :
+
+``` html
+<p id="alpha"></p>
+<p id="beta"></p>
+<p id="gamma"></p>
+```
+
+Now when you open the web user interface you should see three new phrases every 200 millisenconds with gyroscope values.
 
 ```html
 <!DOCTYPE html> 
@@ -662,7 +671,6 @@ This example shows you how to read your smartphone gyroscope, diplay angle value
     <p id="alpha"></p>
     <p id="beta"></p>
     <p id="gamma"></p>
-
 </body>
 
 </html>
