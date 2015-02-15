@@ -247,9 +247,9 @@ lights();
 You turn the RGB LED on or off with the lines :
 
 ``` javascript 
-digitalWrite(18, LOW or HIGH);
-digitalWrite(19, LOW or HIGH);
-digitalWrite(20, LOW or HIGH);
+digitalWrite(18, LOW); or digitalWrite(18, HIGH);
+digitalWrite(19, LOW); or digitalWrite(19, HIGH);
+digitalWrite(20, LOW); or digitalWrite(20, HIGH);
 ```
 
 Using Jquery you can update paragraph text, background color and font color :
@@ -418,6 +418,16 @@ def buttonLoop() :
         # wait 500ms
         delay(500)
 ```
+
+### pwmWriteModule_JS
+
+#### circuit
+
+![WeIO Fritzing analogRead](images/pwmWriteModule_JS.png)
+To build the circuit attach 220-ohm resistor to long leg of eigth LEDs and connect it to ground. Then attach **pins 18, 19, 20, 21, 22 and 24** to short LEDs legs.
+
+
+#### code
 			
 Interfaces
 ----------
@@ -610,6 +620,10 @@ p {
     text-align:center;
 }
 ```
+
+WebApps
+-------
+
 ### smartphoneGyro
 
 This example shows you how to read smartphone gyroscope, diplay angle values on the user interface and monitor on the IDE console.
@@ -692,10 +706,105 @@ def gyroHandler(dataIn):
     print "Gyroscope angles => alpha=",alpha,"beta=",beta,"gamma=",gamma
 ```
 
-WebApps
--------
-
 WebService
 ----------
 
+### googleUnseenMsg_PY
 
+This example shows how to light on the RGB LED on board when there are unread messages in your google inbox.
+
+#### code
+
+In the program below, the first thing you do is to attach **googleInbox** function to main process with the command:
+
+```python
+attach.process(googleInbox)
+```
+
+Next, in the **googleInbox** function, you need to set the mail server, your username and your password :
+
+``` python
+server   = 'imap.gmail.com'
+username = 'USERNAME'
+password = 'PASSWORD'
+```
+
+Then you need to connect to the port 993 of gmail server with this command:
+
+``` python
+account = imaplib.IMAP4_SSL(server, 993)
+```
+
+You need also to login with this command:
+
+``` python
+account.login(username, password)
+```
+
+Finally you can select your inbox folder with this command :
+
+``` python
+account.select('Inbox')
+```
+
+Now you need to create an infinite loop to check inbox every 2000 milliseconds (2 seconds) with the command :
+
+``` python
+while True:
+	.
+	.
+	.
+	delay(2000)
+```
+
+Inside of this loop you search unseen messages with this command : 
+
+``` python
+status, data = account.search(None,'(UNSEEN)')
+```
+
+Finally you test if there are unseen messages in your inbox. If yes you print **"UNSEEN MESSAGES"** in the IDE console and you turn on the red LED, else you turn off the red LED :
+
+``` python
+if data[0] :
+	print "UNSEEN MESSAGES"
+	digitalWrite(18,LOW)
+else :
+   digitalWrite(18,HIGH)
+```
+
+Now, when you run the code you should see the red LED turned on and a message printed on the IDE console if there are unseen messages in your inbox:  
+
+```python
+from weioLib.weio import *
+import imaplib
+
+def setup():
+    attach.process(googleInbox)
+    
+def googleInbox():
+    # define imap server, username and password
+    server   = 'imap.gmail.com'
+    username = 'USERNAME'
+    password = 'PASSWORD'
+
+    # connect to server
+    account = imaplib.IMAP4_SSL(server, 993)
+    # login 
+    account.login(username, password)
+    # select Inbox folder
+    account.select('Inbox')
+
+    # create infinite loop
+    while True:
+        # search unseen messages
+        status, data = account.search(None,'(UNSEEN)')
+        # if there are unseen messages lights the red LED
+        if data[0] :
+            print "UNSEEN MESSAGES"
+            digitalWrite(18,LOW)
+        else :
+            digitalWrite(18,HIGH)
+        # wait 2 seconds    
+        delay(2000)  
+```
