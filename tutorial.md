@@ -47,6 +47,47 @@ def myProcess():
 ```
 
 ### Blink the LED in Python
+Ok, well, *Hello world* is cool, but not very spectacular. So let's continue with a more concrete example : Blink a LED.
+
+Once again, the script must import the API and contain the *setup* function :
+```python
+from weioLib.weio import *
+
+def setup() :
+    # Attaches blinky function to infinite loop
+    attach.process(blinky)
+```
+
+As shown above, we will start a process named *blinky*. The goal of this process is to blink a LED. For this example, we will use the inboard RGB LED, connected on pins 18, 19 and 20 (respectively R, G, B).
+In order to use the GPIOs, they must be configured. Each GPIOs can be an *input* or an *output*. The configuration is done with the API function *pinMode(pin, mode)*. Knowing that, we can start to write the *blinky* function :
+```python
+def blinky():
+     pinMode(18, OUTPUT)
+     pinMode(19, OUTPUT)
+     pinMode(20, OUTPUT)
+```
+
+The next step is to blink the LED. Writing a value to a GPIO is done with the function *digitalWrite(pin, value)*. So, to blink the LED, we will create an infinite loop wherein the LED will be alternatively switched ON and OFF :
+```python
+     # Infinite loop
+     while True: 
+          digitalWrite(18, LOW)
+          digitalWrite(19, LOW)
+          digitalWrite(20, LOW)
+          
+          # Wait for 500ms
+          delay(500) 
+          
+          digitalWrite(18, HIGH)
+          digitalWrite(19, HIGH)
+          digitalWrite(20, HIGH)
+          
+          # Wait again for 500ms
+          delay(500)
+```
+And that's it ! The LED will start to blink with a frequency of 1Hz.
+
+A slightly different example can be found in "examples/digital/blink_PY" from the IDE.
 
 ### Creating first HTML UI
 
