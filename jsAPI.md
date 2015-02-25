@@ -282,6 +282,49 @@ for (var j=0; j<7; j++) {
 sendPackage();
 ```
 
+Interrupts
+----
+Interrupts allow to execute code when the state of an IO is changed without the need to continuously watch its state. WeIO allows upto eight, user defined, interrupts sources.
+Interrupts can be trigged on levels (HIGH or LOW) or transitions (RISING, FALLING, CHANGE). 
+
+### attachInterrupt(pin, mode, callback, obj)
+*attachInterrupt* register and configure the interrupts. This function takes four parameters :
+* pin : The pin number which will generate an interrupt
+* mode : The mode : LOW; HIGH; CHANGE; RISING or FALLING
+* callback : The callback function to execute when an interrupt occurs
+* obj : A user defined object which will be passed to the callback function.
+
+```javascript
+var pin = 18;
+
+function onWeioReady() {
+	var obj = {pinNum:pin, mode:"RISING", callbackName:"interruptCallback"}; 
+	attachInterrupt(pin,RISING,interruptCallback,obj);
+}
+
+function interruptCallback(data) {
+    console.log( data.event + ", User object : " + data.obj );
+}
+```
+
+### detachInterrupt(pin)
+This function detach the interrupt on the specified *pin*.
+
+```javascript
+var pin = 18;
+
+function onWeioReady() {
+	var obj = { pinNum:pin, mode:"RISING", callbackName:"interruptCallback"}; 
+	attachInterrupt(pin,RISING,interruptCallback,obj);
+}
+
+function interruptCallback(data) {
+    console.log( data.event + ", User object : " + data.obj );
+	detachInterrupt(pin);
+    console.log( "and is now detached from pin" + String(pin) );
+}
+```
+
 WeIO info
 =========
 ### versionWeIO

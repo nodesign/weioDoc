@@ -1,7 +1,7 @@
 @media (min-width: 1180px) {
     body .content p img {
       float: right !important;
-      margin-right: -600px !important;
+      margin-right: -500px !important;
     }
 }
 
@@ -9,6 +9,7 @@ body .content p img {
      margin-bottom:25px;
      clear:both;
      display:block;
+	 width:400px;
 }
 
 body .level-2 {
