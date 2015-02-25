@@ -3,6 +3,7 @@ Tutorial
 
 ### Program Structure
 WeIO program structure is following:
+
 - `main.py` -  this is your main Python program (not mandatory if you are making HTML-only program)
 - `index.html` - this is your HTML/JS client-side (executed in user browser) program and/or UI (if you have one)
 
