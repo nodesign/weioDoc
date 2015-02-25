@@ -50,6 +50,7 @@ http://weio.local:8080.
     >If this problem persists, just click on the button "Soft Reset" on the board.
 
 3. This will prompt you the signup screen.
+![WeIO SignUp](images/signup.jpg)
 Please fill in all fields. After setting up root password two additional services will be created : SSH access and SAMBA access.
 
     > NOTE:  
@@ -62,6 +63,7 @@ Please fill in all fields. After setting up root password two additional service
     Finally choosing correct country will affect time zone and WiFi regional settings and channel settings for radio.
 
 4. After signup you will be logged into the IDE
+![WeIO SignUp](images/ide.jpg)
 WeIO IDE environnement is now present on the screen. The next thing to do is to connect WeIO to your local WiFi network or so called STA network.
 
   Feel free to explore WeIO WiFi configurator and try to create your own networks or to connect to existants.
@@ -83,7 +85,27 @@ ssh root@weio.local
 WeIO is available over SMB or Samba sharing. This is used to explore contents of your projects or sources of WeIO platform. This is also  useful for transfering or backuping data between PC and WeIO board. Those who prefer using their own developement tools are welcome using SMB so they can edit codes externally from their prefered IDE.
 SAMBA sharing can be accesed using "weio" as username and password is the same one provided during signup procedure.
 
-### "Hello World" with WeIO
-This example shows how to blink white light (by turning on RED, GREEN and BLUE LEDs at the same time).
+### Choose project
+![WeIO SignUp](images/projects.jpg)
+Explore WeIO examples to see different possibilities.
 
-This is usual hello world program for electronics as they don't have screen to write "hello world".
+WeIO examples are READ ONLY so you can preserve them in their original form
+However it's good practice to duplicate project inside user space (flash for example) and then edit them
+![WeIO SignUp](images/flash.jpg)
+
+
+Inside "myProjects" you will find by default "flash" storage. This is integrated flash memory that comes with WeIO (just a few megabytes) but enought to store a lot of pure code projects. 
+However it's perfectly normal to add external storage like microSD or USB flash. Once you added a new device, push "SOFT RESET" button on the board and you'll see, after refresh, new storage device avalible in drop down menu.
+
+### Play
+![WeIO SignUp](images/playstop.jpg)
+When you click on Play, your project runs. Server is launched and main.py is started. You can follow what is happening on the console that is directly connected to the Python output.
+
+When project is running it's possible to connect to server by calling ip address of your board (example http://weio.local) or by clicking on the preview button. For Python only application, console output is all that you'll ever need.
+
+If you wish to run your project automatically on boot check option "Run last project on boot" in setting drop down menu under your name.
+
+### Editor
+WeIO uses Ace ajax editor, one of the most performant and complete editor for browsers. Editor autosaves all your changes so there is no need to save manually your projects. Every 4 seconds autosave function saves all your opened files, also files are immediately saved on "Play" or "Preview".
+Like all code editors Ace has it's own shortcuts that you can find here :
+https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts
