@@ -4,6 +4,160 @@ Examples
 Actuators
 ---------
 
+### tone_PY & JS
+
+This example shows how to play tones on a Piezo Speaker using PWM signals. A Piezo is nothing but an electronic device that can both be used to play tones and to detect tones. 
+
+#### circuit
+![WeIO Fritzing analogRead](images/tone_PY&JS.png)
+In our example we are plugging the Piezo on the pin number 23, that supports the functionality of writing a PWM signal to it, and not just a plain HIGH or LOW value.
+<br></br>
+Piezos have polarity, commercial devices are usually having a red and a black wires indicating how to plug it to the board. To build the circuit connect the black one to ground (GND) and the red one to the output (pin 23) with a 100-ohm-resistor.
+
+#### code: tone_PY
+
+In the program below, the only thing that you do will in the **setup()** function is to attach **myTone** function to main process with the command:
+
+``` python
+attach.process(myTone)
+```
+ 
+Next, in **myTone** function, you need to initialisse **freq** variable that will be the frequency of first played tone :
+
+``` python
+freq = 16
+```
+
+Then create an infinite loop for play tones every 100 milliseconds with this commands :
+
+``` python
+while True:
+
+	...
+	
+	delay(100)
+```
+
+Finally, inside of this loop you need to play tone, increment **freq** variable and print value of current played tone. You can do this with the commands **tone(pin,freq)**, **print** and **delay(ms)**. You can add some text to your printed string to make it more showy (use commas to concat strings) :
+
+``` python
+tone(23, freq) 
+freq = freq+1
+print "Frequency = ", freq , "Hz"
+```
+
+Now, when you run the code you should see in the IDE Monitor a steady stream of numbers ranging from 16 to the infinite, correlating to the tone played by the piezo speaker : 
+
+```python
+from weioLib.weio import * 
+
+def setup():
+    # attaches myTone function to infinite loop
+    attach.process(myTone)
+    
+def myTone():
+    # init variable freq
+    freq = 16
+    # create infinite loop
+    while True:
+        # get tone with "freq" frequency on pin 23
+        tone(23, freq)
+        # increment freq variable
+        freq = freq+1
+        # print frequency on the console
+        print "Frequency = ", freq , "Hz"
+        # wait 100ms
+        delay(100)
+```
+
+#### code: tone_JS
+
+
+In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display current frequency and call **hertzs()** function by cliking :
+
+``` html
+<p id="phrase" onclick="hertzs()"></p>
+```
+
+First you need to define what to do when page is loaded and websocket opened with this command :   
+
+``` javascript
+function onWeioReady() { ... }
+```
+
+In this example you need to call the main function to initialise displayed phrase. This fucntion update displayed phrase and set the **hertz** variable to play tones : 
+
+``` javascript
+hertzs();
+```
+
+Then you need to create **hertz** variable and set initial frequency to play, in this case 0Hz :
+
+``` javascript
+var hertz = 0;
+```
+
+In the main function displayed text and played tone are updated with this commands :
+
+``` javascript
+$("#phrase").html("FREQUENCY FOR TONE FUNCTION = "+ hertz);
+tone(23, hertz);
+```
+
+Finally you need to increment **hertz** variable and reset at 18000 :
+
+``` javascript
+hertz = hertz+50;
+if(hertz > 18000){
+	hertz=0;
+}
+```
+
+Now when you open the web user interface you should see a text that is frequency value off PWM on the **pin 23**. By cliking on this text you can increment this frequency and play corresponding tone on the piezo speaker :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head >
+    <!-- import weioLibs and link css style -->
+    <script data-main="www/libs/weioLibs" src="www/libs/require.js"></script>
+    <link rel="stylesheet" type="text/css" href="myStyle.css">
+
+    <script>
+	
+    	// This fucntions is called when DOM is loaded and web socket opened
+    	function onWeioReady() {
+    		hertzs();
+    	}
+    
+    	// init variable hertz
+    	var hertz = 0;
+    
+    	function hertzs() {
+        	// update displayed phrase with variable hertz
+        	$("#phrase").html("FREQUENCY FOR TONE FUNCTION = "+ hertz);
+        	// get tone with "hertz" frequency on pin 23
+        	tone(23, hertz);
+        	// increment hertz variable
+        	hertz = hertz+50;
+        	// Reset hertz variable at 18000
+        	if(hertz > 18000){
+            	hertz=0;
+        	}
+    	}
+		
+    </script>
+
+</head>
+
+<body>
+    <p id="phrase" onclick="hertzs()"></p>
+</body>
+
+</html>
+```
+
 Analog
 ------
 
@@ -27,18 +181,26 @@ In the program below, the only thing that you do will in the **setup()** functio
 attach.process(myProcess)
 ```
  
-Next, in myProcess function, you need to set the pin of your analog input and create an infinite loop for the reading :
+Next, in **myProcess** function, you need to initialize **pin** variable that will be the number of your analog input :
 
 ``` python
 pin = 31
-while True:
 ```
 
-Finally, you need to print the analog value to your monitor every 100 milliseconds. You can do this with the commands **print "your text"**, **annalogRead(pin)** and **delay(ms)**. You can also add some text to your printed string to make it more showy (use commas to concat strings) :
+Then create an infinite loop for read analog input every 100 milliseconds with this commands :
+
+``` python
+while True:
+
+	...
+	
+	delay(100)
+```
+
+Finally, you need to print the analog value to your monitor. You can do this with the commands **print**, **annalogRead(pin)** and **delay(ms)**. You can also add some text to your printed string to make it more showy (use commas to concat strings) :
 
 ``` python
 print "analogRead pin ",pin," = ",analogRead(pin)
-delay(100)
 ```
 
 Now, when you run the code you should see in the IDE Monitor a steady stream of numbers ranging from 0-1023, correlating to the position of the pot. As you turn your potentiometer, these numbers will respond almost instantly. 
@@ -419,18 +581,6 @@ def buttonLoop() :
         delay(500)
 ```
 
-### pwmWriteModule_JS
-
-#### circuit
-
-![WeIO Fritzing analogRead](images/pwmWriteModule_JS.png)
-To build the circuit attach 220-ohm resistor to long leg of eigth LEDs and connect it to ground. Then attach **pins 18, 19, 20, 21, 22 and 24** to short LEDs legs.
-
-
-#### code
-			
-Interfaces
-----------
 
 Processes
 ---------
@@ -621,9 +771,6 @@ p {
 }
 ```
 
-WebApps
--------
-
 ### smartphoneGyro
 
 This example shows you how to read smartphone gyroscope, diplay angle values on the user interface and monitor on the IDE console.
@@ -706,6 +853,144 @@ def gyroHandler(dataIn):
     print "Gyroscope angles => alpha=",alpha,"beta=",beta,"gamma=",gamma
 ```
 
+WebApps
+-------
+
+### pwmWriteModule_JS
+
+This example shows how to create a simple web application to control the state of PWM outputs in real time from web user interface.
+
+#### circuit
+
+![WeIO Fritzing analogRead](images/pwmWriteModule_JS.png)
+To build the circuit connect **pins 18, 19, 20, 21, 22 and 24** to long leg of six LEDs. Then attach 220-ohm resistor to the short leg of the LEDs and connect it to ground.
+
+#### code
+
+In the program below the visible page content, the body, contains six sections. Each section can be considered like a row divided in two parts, one paragraph to display values and one slider to control PWM outputs. In this example we use **bootstrap twitter library** to create this sections using classes **col-xs-3** (3/12 of device screen) and **col-xs-9** (9/12 of device screen) :
+
+```html
+<div class="col-xs-3">	    
+	...
+</div>
+<div class="col-xs-9">
+	...
+</div>
+```
+
+Below you can see how to define this sections for **pin 18**. You need to create a paragraph inside of **div col-xs-3** with id **"pin18"** and define displayed text at the start. 
+
+```html
+<div class="col-xs-3">	    
+	<p id="pin18">PIN 18<br>DUTY CYCLE = 0 %</p>
+</div>
+```
+
+Then you need to create a **range input** (slider) inside of **div col-xs-9** and define what to do when there is a new value of slider  using parameter **oninput="your function"**. Here we call **pwm()** function with parameters **18** and **this.value** that is the current value of the slider :
+
+```html
+<div class="col-xs-9">
+	<input type="range" value="0" oninput="pwm(18, this.value, pin18)" />
+</div>
+```
+
+Once all sections are created (for six inputs) you need to define **pwm()** function :
+
+```javascript
+function pwm(pin, value, pinID) { ... }
+```
+
+Using Jquery you can update paragraph text. As you see you need the id of the paragraph and the pin number display the right text in the right place :
+
+```javascript
+$(pinID).html("PIN "+pin+"<br>DUTY CYCLE = "+value+" %");
+```
+
+Finally you need to write the value on corresponding PWM output. Notice that value needs to be parsed as an int :
+
+```javascript
+pwmWrite(pin, parseInt(value));
+```
+	
+Now when you open the web user interface you should see six sliders that control PWM output in real time :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    
+<head >
+    <!-- Import weioLibs -->
+    <script data-main="www/libs/weioLibs" src="www/libs/require.js"></script>
+    <!-- Link css style -->
+    <link rel="stylesheet" href="myStyle.css">
+    <!-- Link Bootstrap 3.3.0 lib -->
+ 	<link href="www/libs/bootstrap-3.3.0/css/bootstrap.min.css" 
+ 	      rel="stylesheet" />
+
+    <script type="text/javascript">
+    
+		// This function display input and set pwm duty cycle
+        function pwm(pin, value, pinID) {
+            // update displayed phrase
+            $(pinID).html("PIN "+pin+"<br>DUTY CYCLE = "+value+" %");
+            // set pwm duty cycle
+            pwmWrite(pin, parseInt(value));
+        }
+        
+    </script>
+
+</head>
+
+<body>
+
+    <!-- 6 range inputs -->
+	<div class="col-xs-3">	    
+	    <p id="pin18">PIN 18<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0" oninput="pwm(18, this.value, pin18)" />
+	</div>
+
+	<div class="col-xs-3">	    
+	    <p id="pin19">PIN 19<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0"oninput="pwm(19, this.value, pin19)" />
+	</div>
+
+	<div class="col-xs-3">
+	    <p id="pin20">PIN 20<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0" oninput="pwm(20, this.value, pin20)" />
+	</div>
+	
+	<div class="col-xs-3">
+	    <p id="pin21">PIN 21<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0" oninput="pwm(21, this.value, pin21)" />
+	</div>
+
+	<div class="col-xs-3">
+	    <p id="pin22">PIN 22<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0" oninput="pwm(22, this.value, pin22)" />
+	</div>
+
+	<div class="col-xs-3">	    
+	    <p id="pin23">PIN 23<br>DUTY CYCLE = 0 %</p>
+	</div>
+	<div class="col-xs-9">
+        <input type="range" value="0" oninput="pwm(23, this.value, pin23)" />
+	</div>
+    
+</body>
+
+</html>
+```
+
 WebService
 ----------
 
@@ -747,13 +1032,13 @@ Finally you can select your inbox folder with this command :
 account.select('Inbox')
 ```
 
-Now you need to create an infinite loop to check inbox every 2000 milliseconds (2 seconds) with the command :
+Now you need to create an infinite loop to check inbox every 2000 milliseconds (2 seconds) with the commands :
 
 ``` python
 while True:
-	.
-	.
-	.
+	
+	...
+	
 	delay(2000)
 ```
 
