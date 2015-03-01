@@ -26,7 +26,7 @@ It is because Apple does not distribure MDNS (aka Bonjour) daemon separtely, so 
 `Avahi` project is traditional way to have mdns support under LInux: http://www.avahi.org 
 
 On Debianesque machines   
-`apt-get install avahi`  
+`apt-get install avahi-daemon`  
 should do
 
 
