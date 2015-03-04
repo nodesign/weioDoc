@@ -936,7 +936,6 @@ Now when you open the web user interface you should see six sliders that control
             // set pwm duty cycle
             pwmWrite(pin, parseInt(value));
         }
-        
     </script>
 
 </head>
@@ -1048,6 +1047,24 @@ Inside of this loop you search unseen messages with this command :
 status, data = account.search(None,'(UNSEEN)')
 ```
 
+Inside of this loop you search the inbox messages with this command : 
+
+``` python
+inbox = urllib2.urlopen(url).read()
+```
+
+And you convert to JSON format with this command :
+```python
+jsonData = json.loads(inbox)
+```
+
+Then you can easly exctract information from your JSON file with this commands:
+
+```python
+messages = jsonData["data"][0]["comments"]["data"]
+color = messages[-1]["message"]
+```
+
 Finally you test if there are unseen messages in your inbox. If yes you print **"UNSEEN MESSAGES"** in the IDE console and you turn on the red LED, else you turn off the red LED :
 
 ``` python
@@ -1093,3 +1110,115 @@ def googleInbox():
         # wait 2 seconds    
         delay(2000)  
 ```
+
+### facebook_PY
+
+This example shows how to turn the RGB LED on board in different colors according to received facebook messages. 
+
+#### code
+
+In the program below, the first thing you do is to attach **myProcess** function to main process with the command:
+
+```python
+attach.process(myProcess)
+```
+
+Next, in the **myProcess** function, you need to set your access token :
+
+``` python
+accessToken = "< HERE YOUR ACCESS TOKEN >"
+```
+
+Then concat the facebook inbox graph URL with your access token to create **url** variable:
+
+``` python
+url = "https://graph.facebook.com/me/inbox?access_token="+accessToken
+```
+
+Now you need to create an infinite loop to check inbox every 5000 milliseconds (5 seconds) with the commands:
+
+``` python
+while True:
+	
+	...
+	
+	delay(5000)
+```
+
+Inside of this loop you can get received messages in JSON format with this commands: 
+
+```python
+inbox = urllib2.urlopen(url).read()
+jsonData = json.loads(inbox)
+```
+
+Then you can search last received message in the JSON with this commands:
+
+```python
+messages = jsonData["data"][0]["comments"]["data"]
+color = messages[-1]["message"]
+```
+
+Finally, chek received message and turn the LED in corresponding color if key is avalaible:
+
+```python
+if color == "red":
+	digitalWrite(18,LOW)
+	digitalWrite(19,HIGH)
+	digitalWrite(20,HIGH)
+```
+
+To run this example you need to create your facebook application in facebook developers web site: [https://developers.facebook.com](https://developers.facebook.com)  
+Once you've created your application go to Tools & Support -> Tools / Graph API Explorer -> Get Access token -> Extended Permissions -> select read_mailbox permission and create your access token.
+<br></br>
+Now, when you run the code you should see the LED turn on different colors and a message printed on the IDE console according to last received message. Available keys are "red", "green" or "blue". All received messages are valids includng messages sended by yourself.
+
+```python
+from weioLib.weio import *
+import urllib2, json
+
+def setup():
+    attach.process(myProcess)
+
+def myProcess():
+    
+    print("Starting Facebook dialog")
+    
+    # Your access token 
+    accessToken = "< HERE YOUR ACCESS TOKEN >"
+    # Inbox url requiring access token
+    url = "https://graph.facebook.com/me/inbox?access_token="+accessToken
+
+    # Create infinite loop to check inbox messages
+    while True:
+        # get inbox data from url
+        inbox = urllib2.urlopen(url).read()
+        # transform string data in JSON python format
+        jsonData = json.loads(inbox)
+        # get messages from jsonData
+        messages = jsonData["data"][0]["comments"]["data"]
+        # get last received message
+        color = messages[-1]["message"]
+
+        # print last received message on the console
+        print "Last received message :", color
+        
+        # write coresponding digital values to pins
+        if color == "red":
+            digitalWrite(18,LOW)
+            digitalWrite(19,HIGH)
+            digitalWrite(20,HIGH)
+            
+        if color == "green":
+            digitalWrite(18,HIGH)
+            digitalWrite(19,LOW)
+            digitalWrite(20,HIGH)
+            
+        if color == "blue":
+            digitalWrite(18,HIGH)
+            digitalWrite(19,HIGH)
+            digitalWrite(20,LOW)            
+         
+        # wait 5 seconds ( To not exceed the rate limit of calls)    
+        delay(5000)
+```        
