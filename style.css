@@ -1,21 +1,21 @@
 @media (min-width: 1180px) {
     body .content p img {
-      float: right !important;
-      margin-right: -500px !important;
+		float: right !important;
+		margin-right: -500px !important;
     }
 }
 
 body .content p img {
-     margin-bottom:25px;
-     clear:both;
-     display:block;
-	 width:400px;
-	 border: solid 2px gray;
-	 border-radius: 6px;
+	margin-bottom:25px;
+	clear:both;
+	display:block;
+	width:400px;
+	border: solid 2px gray;
+	border-radius: 6px;
 }
 
 body .level-2 {
-    color:#505050 !important;
+	color:#505050 !important;
 }
 
 
