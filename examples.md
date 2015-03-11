@@ -125,7 +125,6 @@ Now when you open the web user interface you should see a text that is frequency
     <link rel="stylesheet" type="text/css" href="myStyle.css">
 
     <script>
-	
     	// This fucntions is called when DOM is loaded and web socket opened
     	function onWeioReady() {
     		hertzs();
@@ -146,7 +145,6 @@ Now when you open the web user interface you should see a text that is frequency
             	hertz=0;
         	}
     	}
-		
     </script>
 
 </head>
@@ -266,7 +264,6 @@ Now when you open the web user interface you should see a new phrase every 100 m
     <script data-main="www/libs/weioLibs" src="www/libs/require.js"></script>
     <link rel="stylesheet" type="text/css" href="myStyle.css">
     <script>
-        
         function onWeioReady() {
             // Do something every 100ms
             setInterval(function() {
@@ -304,6 +301,7 @@ p {
 Arduino
 -------
 ### firmata
+
 
 Digital
 -------
@@ -800,9 +798,7 @@ Now when you open the web user interface you should see three new phrases every 
     <script src="gyro.js"></script>
     <meta charset="utf-8" /> 
     <link rel="stylesheet" type="text/css" href="myStyle.css">
-      
-	<script>
-        
+    <script>
         // Setting gyro refresh rate in milliseconds
         gyro.frequency = 200;
         
@@ -823,7 +819,6 @@ Now when you open the web user interface you should see three new phrases every 
             $("#beta").html("beta :"+gyroAngles[1]);
             $("#gamma").html("gamma :"+gyroAngles[2]);
     	});
-    	
     </script>
 </head>
     
@@ -851,6 +846,87 @@ def gyroHandler(dataIn):
     gamma = dataIn[2]
     # print gyroscope angles on the console
     print "Gyroscope angles => alpha=",alpha,"beta=",beta,"gamma=",gamma
+```
+
+Serial
+------
+
+### helloWorld
+
+This example shows how to communicate with other devices using the serial port on board. This example works at 11520 baud rate (11520 8-bit characters per second), set the same configuration in both devices to read and write properly.
+
+#### code
+
+In the program below, the first thing you do is to attach **fadeInOut** and **UART** functions to main process with this commands:
+
+```python
+attach.process(fadeInOut)
+attach.process(UART)
+```
+
+Then you need to define both functions. **fadeInOut** will be only used to shows that the example runs. **UART** will be used for the communication (red and write) :
+
+```python
+def fadeInOut():
+	
+	...
+	
+	
+def UART():
+	
+	...
+	
+```
+
+
+
+```python
+from weioLib.weio import *
+from weioLib.weioSerial import Serial, listSerials
+
+def setup():
+    # making two indipendant processes. One that drives with pwm LEDs
+    # another that writes and reads from serial port
+    attach.process(fadeInOut)
+    attach.process(UART)
+    
+def fadeInOut():
+    # defining infinite loop
+    while True:
+        # count from 0 to 100 % 
+        for i in range(0,100):
+            # change PWM duty cycle to i
+            pwmWrite(18,i)
+            pwmWrite(19,i)
+            pwmWrite(20,i)
+            
+        # count from 0 to 100 % 
+        for i in range(0,100):
+            # change PWM duty cycle to 100-i
+            pwmWrite(18,100-i)
+            pwmWrite(19,100-i)
+            pwmWrite(20,100-i)
+
+def UART():
+    # list available serial ports in WeIO
+    print listSerials()
+    # open WeIO serial port that is attached to pins 0-RX and 1-TX
+    # initSerial function return python serial object (pyserial library)
+    # it's defined with (path, baud rate, timeout-optional 1 by default)
+    ser = Serial(115200)
+    
+    i = 0
+    while True:
+        ser.write(str(i))
+        ser.write(" - Hello, World!\r\n")
+        i+=1
+        # print what comes in
+        data = "" #ser.read(1)
+        n = ser.inWaiting() #look if there is more 
+        if n:                                                                 
+            data = data + ser.read(n)#and get as much as possible
+            print data
+        delay(100)
 ```
 
 WebApps
@@ -927,8 +1003,7 @@ Now when you open the web user interface you should see six sliders that control
  	<link href="www/libs/bootstrap-3.3.0/css/bootstrap.min.css" 
  	      rel="stylesheet" />
 
-    <script type="text/javascript">
-    
+    <script>
 		// This function display input and set pwm duty cycle
         function pwm(pin, value, pinID) {
             // update displayed phrase
