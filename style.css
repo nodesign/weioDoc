@@ -1,15 +1,15 @@
 @media (min-width: 1180px) {
     body .content p img {
 		float: right !important;
-		margin-right: -500px !important;
+		margin-right: -510px !important;
     }
 }
 
 body .content p img {
-	margin-bottom:25px;
+	margin-bottom: 25px;
 	clear:both;
 	display:block;
-	width:400px;
+	width:440px;
 	border: solid 2px gray;
 	border-radius: 6px;
 }
