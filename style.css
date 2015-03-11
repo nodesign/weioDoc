@@ -1,17 +1,41 @@
 @media (min-width: 1180px) {
     body .content p img {
-      float: right !important;
-      margin-right: -500px !important;
+		float: right !important;
+		margin-right: -510px !important;
     }
 }
 
 body .content p img {
-     margin-bottom:25px;
-     clear:both;
-     display:block;
-	 width:400px;
+	margin-bottom: 25px;
+	clear:both;
+	display:block;
+	width:440px;
+	border: solid 2px gray;
+	border-radius: 6px;
 }
 
 body .level-2 {
-    color:#505050 !important;
+	color:#505050 !important;
 }
+
+
+/* Flatdoc content */
+body:not(.no-literate) .content {
+	width:auto; /* Use all width except menu */
+}
+
+/* center code zones in right column */
+body:not(.no-literate) .content > pre, 
+body:not(.no-literate) .content > blockquote {
+	width:500px;
+}
+
+/* beautify code zones */
+.content pre > code {
+	background-color:#272822;
+	color:white;
+	padding:10px;
+	border: solid gray 2px;
+	border-radius: 6px;
+}
+
