@@ -20,8 +20,7 @@
   <!-- Highlight.js theme -->
   <link rel="stylesheet"
    href="highlight/monokai_sublime.css">
-  <script src="//cdn.jsdelivr.net/highlight.js/8.4/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="highlight/highlight.min.js"></script>
 
   <!-- Initializer -->
   <script>
@@ -29,8 +28,7 @@
       fetcher: Flatdoc.file('examples.md')
     });
   </script>
-  <style>
-  </style>
+
 </head>
 <body role='flatdoc'>
 
@@ -61,4 +59,14 @@
   </div>
 
 </body>
+
+  <script>
+    window.onload = function() {
+        var aCodes = document.getElementsByTagName('code');
+        for (var i=0; i < aCodes.length; i++) {
+            hljs.highlightBlock(aCodes[i]);
+        }
+    };	
+  </script>
+	
 </html>
