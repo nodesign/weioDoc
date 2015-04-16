@@ -422,3 +422,24 @@ function onReceiveMessage(data) {
     console.log("Contents ", data.data);
 }
 ```
+
+### genericMessage(eventName, data)
+This function is the WeIO Remote Procedure Call, is used to send messages from JavaScript to Python. To use it you need to previously define in python side which function call when corresponding message is received with **attach.event()** function.
+<br></br>
+When you send a genericMessage Tornado server gets this message from WebSocket that is constantly open between frontend (browser) and backend (Tornado server), decodes it, sees function name "eventName", gets "data" and calls function that you have previously defined in python.
+
+
+```python
+def setup():
+    attach.event("msgFromJStoPy", myFunction)
+
+def myFunction(data):
+	if(data == 1):
+    	digitalWrite(18,HIGH)
+```
+
+```javascript
+function pushButton() {
+	genericMessage("msgFromJStoPy", 1);
+}
+```
