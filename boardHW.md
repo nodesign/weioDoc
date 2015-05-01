@@ -1,6 +1,9 @@
 Board and HW
 ============
 
+-This page should document board pin-out, explain HW interfaces, connections,
+-give some examples how to do wiring and connect sensors, etc…
+
 ### WeIO
 
 Some information about the WeIO board and hardware here.
