@@ -22,13 +22,13 @@ In the program below, the only thing that you do will in the **setup()** functio
 attach.process(myTone)
 ```
  
-Next, in **myTone** function, you need to initialisse **freq** variable that will be the frequency of first played tone :
+Next, in **myTone** function, you need to initialisse **freq** variable that will be the frequency of first played tone:
 
 ``` python
 freq = 16
 ```
 
-Then create an infinite loop for play tones every 100 milliseconds with this commands :
+Then create an infinite loop for play tones every 100 milliseconds with this commands:
 
 ``` python
 while True:
@@ -38,7 +38,7 @@ while True:
 	delay(100)
 ```
 
-Finally, inside of this loop you need to play tone, increment **freq** variable and print value of current played tone. You can do this with the commands **tone(pin,freq)**, **print** and **delay(ms)**. You can add some text to your printed string to make it more showy (use commas to concat strings) :
+Finally, inside of this loop you need to play tone, increment **freq** variable and print value of current played tone. You can do this with the commands **tone(pin,freq)**, **print** and **delay(ms)**. You can add some text to your printed string to make it more showy (use commas to concat strings):
 
 ``` python
 tone(23, freq) 
@@ -46,7 +46,7 @@ freq = freq+1
 print "Frequency = ", freq , "Hz"
 ```
 
-Now, when you run the code you should see in the IDE Monitor a steady stream of numbers ranging from 16 to the infinite, correlating to the tone played by the piezo speaker : 
+Now, when you run the code you should see in the IDE Monitor a steady stream of numbers ranging from 16 to the infinite, correlating to the tone played by the piezo speaker: 
 
 ```python
 from weioLib.weio import * 
@@ -73,38 +73,38 @@ def myTone():
 #### code: tone_JS
 
 
-In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display current frequency and call **hertzs()** function by cliking :
+In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display current frequency and call **hertzs()** function by cliking:
 
 ``` html
 <p id="phrase" onclick="hertzs()"></p>
 ```
 
-First you need to define what to do when page is loaded and websocket opened with this command :   
+First you need to define what to do when page is loaded and websocket opened with this command:   
 
 ``` javascript
 function onWeioReady() { ... }
 ```
 
-In this example you need to call the main function to initialise displayed phrase. This fucntion update displayed phrase and set the **hertz** variable to play tones : 
+In this example you need to call the main function to initialise displayed phrase. This fucntion update displayed phrase and set the **hertz** variable to play tones: 
 
 ``` javascript
 hertzs();
 ```
 
-Then you need to create **hertz** variable and set initial frequency to play, in this case 0Hz :
+Then you need to create **hertz** variable and set initial frequency to play, in this case 0Hz:
 
 ``` javascript
 var hertz = 0;
 ```
 
-In the main function displayed text and played tone are updated with this commands :
+In the main function displayed text and played tone are updated with this commands:
 
 ``` javascript
 $("#phrase").html("FREQUENCY FOR TONE FUNCTION = "+ hertz);
 tone(23, hertz);
 ```
 
-Finally you need to increment **hertz** variable and reset at 18000 :
+Finally you need to increment **hertz** variable and reset at 18000:
 
 ``` javascript
 hertz = hertz+50;
@@ -113,7 +113,7 @@ if(hertz > 18000){
 }
 ```
 
-Now when you open the web user interface you should see a text that is frequency value off PWM on the **pin 23**. By cliking on this text you can increment this frequency and play corresponding tone on the piezo speaker :
+Now when you open the web user interface you should see a text that is frequency value off PWM on the **pin 23**. By cliking on this text you can increment this frequency and play corresponding tone on the piezo speaker:
 
 ```html
 <!DOCTYPE html>
@@ -179,13 +179,13 @@ In the program below, the only thing that you do will in the **setup()** functio
 attach.process(myProcess)
 ```
  
-Next, in **myProcess** function, you need to initialize **pin** variable that will be the number of your analog input :
+Next, in **myProcess** function, you need to initialize **pin** variable that will be the number of your analog input:
 
 ``` python
 pin = 31
 ```
 
-Then create an infinite loop for read analog input every 100 milliseconds with this commands :
+Then create an infinite loop for read analog input every 100 milliseconds with this commands:
 
 ``` python
 while True:
@@ -195,7 +195,7 @@ while True:
 	delay(100)
 ```
 
-Finally, you need to print the analog value to your monitor. You can do this with the commands **print**, **annalogRead(pin)** and **delay(ms)**. You can also add some text to your printed string to make it more showy (use commas to concat strings) :
+Finally, you need to print the analog value to your monitor. You can do this with the commands **print**, **annalogRead(pin)** and **delay(ms)**. You can also add some text to your printed string to make it more showy (use commas to concat strings):
 
 ``` python
 print "analogRead pin ",pin," = ",analogRead(pin)
@@ -219,19 +219,19 @@ def myProcess():
 #### Code: analogRead_JS
 
 ##### User interface: index.html
-In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display the potentiometer value :
+In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display the potentiometer value:
 
 ``` html
 <p id="phrase" ></p>
 ```
 
-To update this value you need to use JavaScript and JQuery functions. You can define what to do When page is loaded and websocket opened whit this function :
+To update this value you need to use JavaScript and JQuery functions. You can define what to do when page is loaded and websocket opened whit this function:
 
 ``` javascript
 function onWeioReady() { ... }
 ```
 
-In this example you need to set a timer every 100 milliseconds : 
+In this example you need to set a timer every 100 milliseconds: 
 
 ``` javascript
 setInterval(function() { ... }, 100);
@@ -249,7 +249,7 @@ This functins works like in python but needs an extra parameter, the callback fu
 function pinCallback(data) { ... }
 ```
 
-Using Jquery you can update paragraph text :
+Using Jquery you can update paragraph text:
 
 ``` javascript
 $("#phrase").html("ANALOGREAD VALUE ON THE PIN 31 IS "+ data.data);
@@ -287,7 +287,7 @@ Now when you open the web user interface you should see a new phrase every 100 m
 ```
 
 ##### Custom CSS style: myStyle.css
-This simple CSS shows you how to stylize your user interface setting centered text, Helvetica font family, bold font weight and variable font size (15% of the smallest viewport side) :
+This simple CSS shows you how to stylize your user interface setting centered text, Helvetica font family, bold font weight and variable font size (15% of the smallest viewport side):
  
 ``` css
 p {
@@ -319,25 +319,25 @@ Now when you run your code you should see that board LED plus external LED blink
 
   
 #### Code
-In the program below, the first thing you do is to attach **blinky()** function to main process with the command :
+In the program below, the first thing you do is to attach **blinky()** function to main process with the command:
 
 ``` python
 attach.process(blinky)
 ```
 
-In the **blinky()** function, you create an infinite loop to change the state of the pins :
+In the **blinky()** function, you create an infinite loop to change the state of the pins:
 
 ``` python
 while True:
 ```
 
-You turn the LED on with the command :
+You turn the LED on with the command:
 
 ``` python
 digitalWrite(18, HIGH)
 ```
 
-This supplies **3.3 volts** to **pin 18**. That creates a voltage difference across the pins of the LED, and lights it up. Then you turn it off with the command :
+This supplies **3.3 volts** to **pin 18**. That creates a voltage difference across the pins of the LED, and lights it up. Then you turn it off with the command:
 
 ``` python
 digitalWrite(18, LOW)
@@ -351,11 +351,11 @@ In between the on and the off, you want enough time for a person to see the chan
 ```python
 from weioLib.weio import *
 
-def setup() :
+def setup():
     # Attaches blinky function to infinite loop
     attach.process(blinky)
 
-def blinky() :
+def blinky():
     while True:
         # write HIGH value to digital PINS 18, 19 & 20
         digitalWrite(18, HIGH) # red led
@@ -384,27 +384,31 @@ Now when you run your code and go to web user interface you should control the s
 
 
 #### Code
-In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display current pins values and call **lights()** function by cliking :
+In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display current pins values and call **lights()** function by cliking:
 
 ``` html
 <p id="phrase" onclick="lights()"></p>
 ```
 
-First you need to create **light** variable and set initial state of pins, in this case false (**LOW** state). Then you need to define what to do when page is loaded and websocket opened :   
+First you need to create **light** variable and set initial state of pin, in this case false (**LOW** state):
 
 ``` javascript
 var light = false;
+```
 
+Then you need to define what to do when page is loaded and websocket opened inside of this function:
+
+``` javascript
 function onWeioReady() { ... }
 ```
 
-In this example you need to call the main function to initialise displayed phrase. This fucntion test the **light** variable, update displayed phrase and write **HIGH** if **light** variable is true and **LOW** if **light** variable is false : 
+In this example you need to call the main function to initialise displayed phrase. This fucntion test the **light** variable, update displayed phrase and write **HIGH** if **light** variable is true and **LOW** if **light** variable is false: 
 
 ``` javascript
-lights();
+function lights() { ... };
 ```
 
-You turn the RGB LED on or off with the lines :
+You turn the RGB LED on or off with the lines:
 
 ``` javascript 
 digitalWrite(18, LOW); or digitalWrite(18, HIGH);
@@ -412,7 +416,7 @@ digitalWrite(19, LOW); or digitalWrite(19, HIGH);
 digitalWrite(20, LOW); or digitalWrite(20, HIGH);
 ```
 
-Using Jquery you can update paragraph text, background color and font color :
+Using Jquery you can update paragraph text, background color and font color:
 
 ``` javascript 
 $("#phrase").html("TURN OFF THE LIGHT!");
@@ -420,7 +424,7 @@ $("body").css("background","white");
 $("#phrase").css("color","black");
 ```
 
-Finally you need to tooggle **light** variable with this line :
+Finally you need to tooggle **light** variable with this line:
 
 ``` javascript
 light = !light;
@@ -480,7 +484,7 @@ Now when you open the web user interface you should see a text that is digital v
 ```
 
 ##### Custom CSS style: myStyle.css
-This simple CSS shows you how to stylize your user interface :
+This simple CSS shows you how to stylize your user interface:
  
 ``` css
 p {
@@ -514,7 +518,7 @@ In the program below, the first thing you do is to attach **buttonLoop** functio
 attach.process(buttonLoop)
 ```
 
-Next, in **buttonLoop** function, you need to set your input pins and corresponding pin modes with this commands :
+Next, in **buttonLoop** function, you need to set your input pins and corresponding pin modes with this commands:
 
 ``` python
 pinDown = 24
@@ -526,25 +530,25 @@ pinMode(pinDown,PULL_DOWN)
 pinMode(pinUp,PULL_UP)
 ```
 
-In the **buttonLoop** function, you create an infinite loop to read inputs and print values every 500 milliseconds with the command :
+In the **buttonLoop** function, you create an infinite loop to read inputs and print values every 500 milliseconds with the command:
 
 ``` python
 while True:
 ```
 
-You read the digital value with the command :
+You read the digital value with the command:
 
 ``` python
 valDown =  digitalRead(pinDown)
 ```
 
-You print the value on the IDE console with the command :
+You print the value on the IDE console with the command:
 
 ``` python
-print "Pin",pinDown,"state :",valDown
+print "Pin",pinDown,"state: ",valDown
 ```
 
-The delay() commands tell the WeIO to do nothing for 100 milliseconds :
+The delay() commands tell the WeIO to do nothing for 100 milliseconds:
 
 ``` python
 delay(500)
@@ -556,10 +560,10 @@ Now, when you run the code you should see in the IDE Monitor the digital values 
 ``` python
 from weioLib.weio import *
 
-def setup() :
+def setup():
     attach.process(buttonLoop)
     
-def buttonLoop() :
+def buttonLoop():
     # define pins for reading
     pinDown = 24
     pinUp = 25
@@ -572,8 +576,8 @@ def buttonLoop() :
         valDown =  digitalRead(pinDown)
         valUp =  digitalRead(pinUp)
         # print result
-        print "Pin",pinDown,"state :",valDown
-        print "Pin",pinUp,"state :",valUp
+        print "Pin",pinDown,"state: ",valDown
+        print "Pin",pinUp,"state: ",valUp
         print ""
         # wait 500ms
         delay(500)
@@ -600,7 +604,7 @@ Now when you run your code and go to web user interface you should control the s
 #### code
 In the program below the visible page content, the body, contains two  sections with **div** tag. By cliking on this sections you can send events to python. 
 
-The first one send event **msgFromJStoPy** with message **1**. You can set background color, text and function to call when you click on the section with this command :  
+The first one send event **msgFromJStoPy** with message **1**. You can set background color, text and function to call when you click on the section with this command:  
 
 ``` html
 <div style="background-color:white" 
@@ -609,7 +613,7 @@ The first one send event **msgFromJStoPy** with message **1**. You can set backg
 </div>
 ```
 
-The second one send event **"msgFromJStoPy"** with message **0**. You cant set background color, text and function to call when you click with this command :
+The second one send event **"msgFromJStoPy"** with message **0**. You cant set background color, text and function to call when you click with this command:
 
 ``` html
 <div style="background-color:black" 
@@ -646,7 +650,7 @@ Now when you open the web user interface you should see two parts. By cliking on
 </html>
 ```
 
-Then in the python side, the main.py, you need to set function to call when event with name **"msgFromJStoPy"** is cached with this command :
+Then in the python side, the main.py, you need to set function to call when event with name **"msgFromJStoPy"** is cached with this command:
 
 ``` python
 attach.event("msgFromJStoPy", led)
@@ -655,7 +659,7 @@ attach.event("msgFromJStoPy", led)
 ``` python
 from weioLib.weio import *
 
-def setup() :
+def setup():
     # create event and link to function
     attach.event("msgFromJStoPy", led)
 
@@ -680,25 +684,25 @@ This example shows you how to read WeIO board temperature and display value on w
 
 ##### User interface: index.html
 
-In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display temperature from board termometer :
+In the program below the visible page content, the body, contains only a paragraph with id **"phrase"**. This paragraph will be used to display temperature from board termometer:
 
 ``` html
 <p id="phrase"  ></p>
 ```
 
-First you need to define what to do when DOM is fully loaded and websocket to WeIO opened with this command :   
+First you need to define what to do when DOM is fully loaded and websocket to WeIO opened with this command:   
   
 ``` javascript
 function onWeioReady() { ... }
 ```
 
-In this example you need to set a timer every 200 milliseconds : 
+In this example you need to set a timer every 200 milliseconds: 
 
 ``` javascript
 setInterval(function() { ... }, 200);
 ```
 
-To read the termometer value you need to call getTemperature() function :
+To read the termometer value you need to call getTemperature() function:
 
 ``` javascript
 getTemperature(pinCallback);
@@ -710,7 +714,7 @@ The callback function is received message from IDE server to user interface. Thi
 function pinCallback(data) { ... }
 ```
 
-Using Jquery you can update paragraph text :
+Using Jquery you can update paragraph text:
 
 ``` javascript
 $("#phrase").html("TEMPERATURE ON THE BOARD IS "+ callback.data);
@@ -774,7 +778,7 @@ p {
 This example shows you how to read smartphone gyroscope, diplay angle values on the user interface and monitor on the IDE console.
 
 #### code
-In the program below the visible page content, the body, contains three paragraphs with ids **"alpha"**, **"beta"** and **"gamma"**. This paragraphs will be used to display smartphone gyroscope angles :
+In the program below the visible page content, the body, contains three paragraphs with ids **"alpha"**, **"beta"** and **"gamma"**. This paragraphs will be used to display smartphone gyroscope angles:
 
 ``` html
 <p id="alpha"></p>
@@ -815,9 +819,9 @@ Now when you open the web user interface you should see three new phrases every 
             genericMessage("gyro", gyroAngles);
 			
 			// Update displayed values
-            $("#alpha").html("alpha :"+gyroAngles[0]);
-            $("#beta").html("beta :"+gyroAngles[1]);
-            $("#gamma").html("gamma :"+gyroAngles[2]);
+            $("#alpha").html("alpha: "+gyroAngles[0]);
+            $("#beta").html("beta: "+gyroAngles[1]);
+            $("#gamma").html("gamma: "+gyroAngles[2]);
     	});
     </script>
 </head>
@@ -864,7 +868,7 @@ attach.process(fadeInOut)
 attach.process(UART)
 ```
 
-Then you need to define both functions. **fadeInOut** will be only used to shows that the example runs. **UART** will be used for the communication (red and write) :
+Then you need to define both functions. **fadeInOut** will be only used to shows that the example runs. **UART** will be used for the communication (red and write):
 
 ```python
 def fadeInOut():
@@ -943,7 +947,7 @@ To build the circuit connect **pins 18, 19, 20, 21, 22 and 24** to long leg of s
 
 #### code
 
-In the program below the visible page content, the body, contains six sections. Each section can be considered like a row divided in two parts, one paragraph to display values and one slider to control PWM outputs. In this example we use **bootstrap twitter library** to create this sections using classes **col-xs-3** (3/12 of device screen) and **col-xs-9** (9/12 of device screen) :
+In the program below the visible page content, the body, contains six sections. Each section can be considered like a row divided in two parts, one paragraph to display values and one slider to control PWM outputs. In this example we use **bootstrap twitter library** to create this sections using classes **col-xs-3** (3/12 of device screen) and **col-xs-9** (9/12 of device screen):
 
 ```html
 <div class="col-xs-3">	    
@@ -962,7 +966,7 @@ Below you can see how to define this sections for **pin 18**. You need to create
 </div>
 ```
 
-Then you need to create a **range input** (slider) inside of **div col-xs-9** and define what to do when there is a new value of slider  using parameter **oninput="your function"**. Here we call **pwm()** function with parameters **18** and **this.value** that is the current value of the slider :
+Then you need to create a **range input** (slider) inside of **div col-xs-9** and define what to do when there is a new value of slider  using parameter **oninput="your function"**. Here we call **pwm()** function with parameters **18** and **this.value** that is the current value of the slider:
 
 ```html
 <div class="col-xs-9">
@@ -970,25 +974,25 @@ Then you need to create a **range input** (slider) inside of **div col-xs-9** an
 </div>
 ```
 
-Once all sections are created (for six inputs) you need to define **pwm()** function :
+Once all sections are created (for six inputs) you need to define **pwm()** function:
 
 ```javascript
 function pwm(pin, value, pinID) { ... }
 ```
 
-Using Jquery you can update paragraph text. As you see you need the id of the paragraph and the pin number display the right text in the right place :
+Using Jquery you can update paragraph text. As you see you need the id of the paragraph and the pin number display the right text in the right place:
 
 ```javascript
 $(pinID).html("PIN "+pin+"<br>DUTY CYCLE = "+value+" %");
 ```
 
-Finally you need to write the value on corresponding PWM output. Notice that value needs to be parsed as an int :
+Finally you need to write the value on corresponding PWM output. Notice that value needs to be parsed as an int:
 
 ```javascript
 pwmWrite(pin, parseInt(value));
 ```
 	
-Now when you open the web user interface you should see six sliders that control PWM output in real time :
+Now when you open the web user interface you should see six sliders that control PWM output in real time:
 
 ```html
 <!DOCTYPE html>
@@ -1080,7 +1084,7 @@ In the program below, the first thing you do is to attach **googleInbox** functi
 attach.process(googleInbox)
 ```
 
-Next, in the **googleInbox** function, you need to set the mail server, your username and your password :
+Next, in the **googleInbox** function, you need to set the mail server, your username and your password:
 
 ``` python
 server   = 'imap.gmail.com'
@@ -1100,13 +1104,13 @@ You need also to login with this command:
 account.login(username, password)
 ```
 
-Finally you can select your inbox folder with this command :
+Finally you can select your inbox folder with this command:
 
 ``` python
 account.select('Inbox')
 ```
 
-Now you need to create an infinite loop to check inbox every 2000 milliseconds (2 seconds) with the commands :
+Now you need to create an infinite loop to check inbox every 2000 milliseconds (2 seconds) with the commands:
 
 ``` python
 while True:
@@ -1116,19 +1120,19 @@ while True:
 	delay(2000)
 ```
 
-Inside of this loop you search unseen messages with this command : 
+Inside of this loop you search unseen messages with this command: 
 
 ``` python
 status, data = account.search(None,'(UNSEEN)')
 ```
 
-Inside of this loop you search the inbox messages with this command : 
+Inside of this loop you search the inbox messages with this command: 
 
 ``` python
 inbox = urllib2.urlopen(url).read()
 ```
 
-And you convert to JSON format with this command :
+And you convert to JSON format with this command:
 ```python
 jsonData = json.loads(inbox)
 ```
@@ -1140,7 +1144,7 @@ messages = jsonData["data"][0]["comments"]["data"]
 color = messages[-1]["message"]
 ```
 
-Finally you test if there are unseen messages in your inbox. If yes you print **"UNSEEN MESSAGES"** in the IDE console and you turn on the red LED, else you turn off the red LED :
+Finally you test if there are unseen messages in your inbox. If yes you print **"UNSEEN MESSAGES"** in the IDE console and you turn on the red LED, else you turn off the red LED:
 
 ``` python
 if data[0] :
@@ -1198,7 +1202,7 @@ In the program below, the first thing you do is to attach **myProcess** function
 attach.process(myProcess)
 ```
 
-Next, in the **myProcess** function, you need to set your access token :
+Next, in the **myProcess** function, you need to set your access token:
 
 ``` python
 accessToken = "< HERE YOUR ACCESS TOKEN >"
@@ -1276,7 +1280,7 @@ def myProcess():
         color = messages[-1]["message"]
 
         # print last received message on the console
-        print "Last received message :", color
+        print "Last received message: ", color
         
         # write coresponding digital values to pins
         if color == "red":
