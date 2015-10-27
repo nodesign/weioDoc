@@ -181,9 +181,10 @@ And the SD Card can be unmounted :
 
 ```
 root@WEIO:/# umount /weioUser/sd/
+root@WEIO:/# rm -r /weioUser/sd # Manually remove the mountpoint
 ```
 
-#### Prepare the SD Card
+#### Extend the system
 At this point, the SD Card can be prepared. The first step is to format it :
 
 ```
@@ -196,20 +197,7 @@ Once formatted, the SD Card can be mounted under ```/mnt```
 root@WEIO:/# mount /dev/sda1 /mnt/
 ```
 
-Now, the content of ```/overlay``` must be copied on the SD Card :
-
-```
-root@WEIO:/# tar -C /overlay -cvf - . | tar -C /mnt -xf -
-```
-
-And finally, the SD Card can be unmounted :
-
-```
-root@WEIO:/# umount /mnt/
-```
-
-#### Set the system to use the SD Card
-The last step is to setup the system to use the SD Card :
+Now we can setup the system to use the SD Card :
 
 ```
 block detect > /etc/config/fstab
@@ -254,8 +242,21 @@ config 'mount'
         option  uuid    '0824a446-69a1-405a-b856-b276102fa6db'
         option  enabled '1'
 ```
+Then, save the file.
 
-Then, save the file. The system is now ready. You can reboot the system :
+Now, the content of ```/overlay``` must be copied on the SD Card :
+
+```
+root@WEIO:/# tar -C /overlay -cvf - . | tar -C /mnt -xf -
+```
+
+And finally, the SD Card can be unmounted :
+
+```
+root@WEIO:/# umount /mnt/
+```
+
+The system is now ready. You can reboot the system :
 
 ```
 root@WEIO:/# reboot 
@@ -275,4 +276,3 @@ tmpfs                   512.0K         0    512.0K   0% /dev
 ```
 
 In my case, I have now 3.5GB of free space !
-
