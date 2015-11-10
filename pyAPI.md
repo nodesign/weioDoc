@@ -134,6 +134,25 @@ def myProcess():
 ```
 *Note : Before reading a port value, the port must be configured. See __portMode__ for more details.*
 
+### pulseIn(pin, value, timeout)
+Reads a pulse (either HIGH or LOW) on a pin. For example, if value is HIGH, pulseIn() waits for the pin to go HIGH, starts timing, then waits for the pin to go LOW and stops timing. Returns the length of the pulse in microseconds or 0 if no complete pulse was received within the timeout.
+
+Please also note that if the pin is already high when the function is called, it will wait for the pin to go LOW and then HIGH before it starts counting.
+
+```python
+from weioLib.weio import *
+
+def setup():
+    attach.process(myProcess)
+
+def myProcess():
+    while True:
+        # Read a LOW pulse during 500ms on pin 23
+        time = pulseIn(23, LOW, 500000)
+        # Print the value of pulse duration
+        print "PulseIn duration = ", time
+```
+
 Analog I/O
 ----------
 ### analogRead(pin, callback)
