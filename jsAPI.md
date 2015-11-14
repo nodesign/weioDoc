@@ -180,6 +180,28 @@ function pinCallback(pinInput) {
 }
 ```
 
+### pulseIn(pin, level, timeout, callback)
+*pulseIn* reads a pulse (either HIGH or LOW) on a pin. For example, if value is HIGH, pulseIn() waits for the pin to go HIGH, starts timing, then waits for the pin to go LOW and stops timing. Returns the length of the pulse in microseconds or 0 if no complete pulse was received within the timeout.
+
+Please also note that if the pin is already high when the function is called, it will wait for the pin to go LOW and then HIGH before it starts counting.
+
+```javascript
+var pin = 23;
+var timeout = 500000;
+
+function onWeioReady() {
+	// Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
+	var time = pulseIn(pin, LOW, timeout, pulseInCallback);
+}
+
+function pulseInCallback(callback) {
+	// Print pulseIn duration
+	console.log( "PulseIn duration = " + callback.data );
+	// Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
+	pulseIn(23, LOW, 500000, pulseInCallback);
+}
+```
+
 Analog I/O
 ----------
 ### analogRead(pin, callback)
