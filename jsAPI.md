@@ -190,14 +190,14 @@ var pin = 23;
 var timeout = 500000;
 
 function onWeioReady() {
-    // Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
+	// Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
 	var time = pulseIn(pin, LOW, timeout, pulseInCallback);
 }
 
 function pulseInCallback(callback) {
 	// Print pulseIn duration
 	console.log( "PulseIn duration = " + callback.data );
-    // Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
+	// Read a LOW pulse for 0.5s on pin 23 and call pulseInCallback
 	pulseIn(23, LOW, 500000, pulseInCallback);
 }
 ```
