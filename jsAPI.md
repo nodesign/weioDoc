@@ -52,8 +52,11 @@ Digital I/O
 -----------
 ### digitalWrite(pin, value)
 Sets voltage to +3.3V or Ground on corresponding pin. This function takes two parameters : pin number and it's state that can be HIGH = +3.3V or LOW = Ground.
-
-In index.html add one button in the body section
+First add support for jQuery in index.html uncommenting this line inside head section
+```html
+<script src="www/libs/jquery/jquery-2.0.2.min.js"></script>
+```
+Continue to edit index.html by adding one button in the body section
 ```html
 <button type="button" id="myButton">ON</button>
 ```
