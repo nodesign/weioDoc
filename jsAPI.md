@@ -3,27 +3,40 @@ Javascript
 Boilerplate
 -----------
 ### HTML & JS boilerplate
-This is html boilerplate for WeIO. WeIO includes dependencies : jQuery, sockJS and weioApi.
-
+This is html boilerplate for WeIO. WeIO needs weioApi library to work properly. 
+Other dependencies are optional like p5js, jQuery, Chart and Bootstrap. 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<script data-main="weioLibs/weio" src="weioLibs/require.js"></script>
 
   <head >
+    <!-- This is main weio api please call it always at first place -->
+    <script src="www/libs/weio/weioApi.js"></script>
+    <!-- This is p5 js - Processing for javascript library, desactivate if you d'ont need it -->
+    <script src="www/libs/p5/p5.min.js"></script>
+
+    <!-- Here you can add other local libraries -->
+    <!-- <script src="www/libs/jquery/jquery-2.0.2.min.js"></script> -->
+    <!-- <script src="www/libs/chartJS/Chart.min.js"></script> -->
+
+    <!-- This is your processing p5 sketch -->
+    <script src="sketch.js"></script>
+
     <title>My first Web app</title>
+
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
   </head>
 
   <body>
 
-    <p>Hello world!</p>
-    
-    <script>
-        function onWeioReady() {
-            console.log("DOM is loaded, websocket is opened");
-        }
-    </script>
+  <script> 
 
+    function onWeioReady() {
+       console.log("DOM is loaded, websocket is opened");
+    }
+
+  </script>
   </body>
 </html>
 ```
